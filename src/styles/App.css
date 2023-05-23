@@ -1,0 +1,20 @@
+.App {
+    /* text-align: center; */
+}
+
+.container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.cart {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+}
+.fixed {
+    position: fixed;
+    bottom: 3%;
+    right: 2%;
+}

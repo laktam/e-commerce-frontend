@@ -1,0 +1,9 @@
+@import "rsuite/dist/rsuite.css";
+
+#root {
+    padding: 10px;
+}
+
+a.active {
+    color: blue;
+}
