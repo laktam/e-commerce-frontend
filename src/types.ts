@@ -25,6 +25,7 @@ export type ProductDB = {
         id: number;
         quantity: number;
     }
+    description: string;
 }
 
 export type OrderDB = {

@@ -37,12 +37,12 @@ export function Product(props: Props) {
 
     const addProduct = async () => {
         //cart/addProduct will decrement qtt
-//test if product exist as an order 
-// if so increment order qtt and decrement product qtt
+        //test if product exist as an order 
+        // if so increment order qtt and decrement product qtt
 
 
-//else add prodcut as order 
-// and increment order qtt and decrement product qtt
+        //else add prodcut as order 
+        // and increment order qtt and decrement product qtt
 
 
 
@@ -105,15 +105,12 @@ export function Product(props: Props) {
                     <Typography gutterBottom variant="h5" component="div">
                         {props.product.name}
                     </Typography>
-                    {/* <Typography textAlign={'right'}>
-                    {props.price}
-                </Typography> */}
-                    {!props.inCart &&
-                        <Typography variant="body2" color="text.secondary">
-                            Proudct description ..... group of squamate reptiles, with over 6,000
-                            species, ranging across all continents except Antarctica
-                        </Typography>
-                    }
+
+                    <Typography variant="body2" color="text.secondary" sx={{ maxHeight: 60 ,overflow: 'hidden'}}>
+                        {props.product.description}
+                        {/* Proudct description ..... group of squamate reptiles, with over 6,000
+                        species, ranging across all continents except Antarctica */}
+                    </Typography>
 
                 </CardContent>
             </CardActionArea>
