@@ -7,8 +7,6 @@ import { ProductDB } from "../../types";
 import { Buffer } from 'buffer';
 
 import { Link } from "react-router-dom";
-import React from "react";
-import bufferImage from "buffer-image";
 
 type Props = {
     img: string;
@@ -104,24 +102,19 @@ export function Product(props: Props) {
 
     return (
         image == '' ?
-            <Card sx={{ maxWidth: 300, m: 1 }}>
-                <Skeleton animation="wave" variant="rounded" width={500} height={400} sx={{ mb: 5 }} />
-                <Skeleton variant="text" sx={{ fontSize: '5rem' }} />
-                <Skeleton animation="wave" variant="rounded" width={500} height={100} sx={{ mb: 3 }} />
-                <Skeleton animation="wave" variant="rounded" width={500} height={30} sx={{ mb: 1 }} />
+            <Card sx={{ m: 1 }}>
+                <Skeleton animation="wave" variant="rounded" height={250} sx={{ mb: 1.5 }} />
+                <Skeleton animation="wave" variant="rounded" height={100} sx={{ mb: 0.5, mr: 1, ml: 1 }} />
+                <Skeleton animation="wave" variant="rounded" width={'35%'} height={35} sx={{ mb: 0.5, mr: 1, ml: 1 }} />
             </Card>
             :
-            <Card sx={{ display: "inline-block", maxWidth: 300, m: 1 }}>
-                {/* href={"/product/"+ props.product.id}  */}
+            <Card sx={{ display: "inline-block", m: 1, width:'100%' }}>
                 <Link to={"/product/" + props.product.id} style={{ textDecoration: 'none' }}>
                     <CardActionArea >
                         <CardMedia
                             component="img"
-                            height=""
-                            // image={ProdImg}
+                            height="300"
                             src={`data:image/jpeg;base64,${image}`}
-                        // alt="green iguana"
-
                         >
                             { }
                         </CardMedia>
@@ -132,8 +125,6 @@ export function Product(props: Props) {
 
                             <Typography variant="body2" color="text.secondary" sx={{ maxHeight: 60, overflow: 'hidden' }}>
                                 {props.product.description}
-                                {/* Proudct description ..... group of squamate reptiles, with over 6,000
-                        species, ranging across all continents except Antarctica */}
                             </Typography>
 
                         </CardContent>

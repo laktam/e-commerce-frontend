@@ -1,6 +1,6 @@
 import { Alert, Button, Grid, Paper, Snackbar, TextField } from "@mui/material";
 import axios from "axios";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { BASE_URL } from "../../const";
 
 export function AdminAddProduct() {
@@ -11,39 +11,14 @@ export function AdminAddProduct() {
     const [images, setImages] = useState<FileList | null>(null)
     const [open, setOpen] = useState(false)
 
-    const handleClose = () => {
-        setOpen(false)
-    }
+
+    const aRef = useRef<HTMLInputElement>(null);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setImages(e.target.files)
     }
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        let id = 0;
-        //create product 
-        // try {
-        // const product = {
-        //     name: name,
-        //     price: price,
-        //     description: description,
-        //     quantity: quantity,
-
-        // }
-        //     //this should return product id so i can  update it later adding images
-        //     const res = await axios.post(BASE_URL + 'product/create'
-        //         , product
-        //         ,
-        //         {
-        //             headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-        //         });
-        //     id = res.data
-        // } catch (error) {
-        //     console.log(error)
-        // }
-        //then add image
-
-
 
         if (!images) {
             return;
@@ -72,6 +47,22 @@ export function AdminAddProduct() {
                         'Content-Type': 'multipart/form-data',
                     }
                 });
+            setOpen(true)
+
+            //reset 
+            setName('')
+            setPrice(0)
+            setDescription('')
+            setImages(null)
+            setQuantity(0)
+
+            if (aRef.current !== null) {
+                aRef.current.value = '';
+              }
+           
+
+
+
 
         } catch (error) {
             console.log(error);
@@ -88,14 +79,20 @@ export function AdminAddProduct() {
             <Grid container spacing={2} justifyContent="space-around">
                 <Grid item xs={6}>
                     <TextField label="name" variant="outlined"
+                        value={name}
                         onChange={e => setName(e.target.value)}
+                        required
                     />
                 </Grid>
                 <Grid item xs={6}>
-                    <TextField label="images" variant="outlined" type="file" onChange={handleFileChange}
+                    {/* label="images" */}
+                    <TextField variant="outlined" type="file" onChange={handleFileChange}
                         inputProps={{
                             multiple: true
                         }}
+                        ref={aRef}
+                    // onSubmit={(e) => { e.target.value = null; }}
+                    // value={images}
                     />
                 </Grid>
                 <Grid item xs={6}>
@@ -105,8 +102,10 @@ export function AdminAddProduct() {
                         InputLabelProps={{
                             shrink: true,
                         }}
+                        value={price}
                         variant="outlined"
                         onChange={e => setPrice(Number(e.target.value))}
+                        required
                     />
                 </Grid >
                 <Grid item xs={6}>
@@ -117,7 +116,9 @@ export function AdminAddProduct() {
                             shrink: true,
                         }}
                         variant="outlined"
+                        value={quantity}
                         onChange={e => setQuantity(Number(e.target.value))}
+                        required
                     />
                 </Grid>
                 <Grid item xs={12}>
@@ -129,6 +130,7 @@ export function AdminAddProduct() {
                         minRows={6}
                         variant="outlined"
                         onChange={e => setDescription(e.target.value)}
+                        value={description}
                     />
                 </Grid>
                 <Grid item xs></Grid>
@@ -140,7 +142,7 @@ export function AdminAddProduct() {
             </Grid>
         </form>
         <Snackbar
-            anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
             open={open}
             autoHideDuration={3000}
             onClose={() => setOpen(false)}

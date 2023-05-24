@@ -4,6 +4,7 @@ import { Product } from "./products/Product";
 import { ProductDB } from "../types";
 import axios from "axios";
 import { BASE_URL } from "../const";
+import { Grid } from "@mui/material";
 type Props = {
     userId: number;
     cartId: number;
@@ -25,7 +26,6 @@ export function Home(props: Props) {
             (response) => {
                 setProds(response.data)
                 console.log(response.data);
-
             }
         ).catch((err) => {
             console.log(err)
@@ -36,16 +36,15 @@ export function Home(props: Props) {
         {/* props.isLoggedIn  */}
         {/* <Header /> */}
         {isLoggedIn === 'true' ?
-            <div>
-
+            <Grid container spacing={2} alignItems="flex-start">
                 {prods.map(
                     (prod, index) => {
-                        // quantity={prod.quantity}
-                        // return <Product setTotal={props.setTotal} inCart={false} key={index} img={""} name={prod.name} price={prod.price} description={""} prodId={prod.id}  />
-                        return <Product setTotal={props.setTotal} inCart={false} key={index} img={""} description={""} product={prod} />
+                        return <Grid item xs={12} sm={6} md={4} lg={3}>
+                            <Product setTotal={props.setTotal} inCart={false} key={index} img={""} description={""} product={prod} />
+                        </Grid>
                     }
                 )}
-            </div>
+            </Grid>
             :
             //isLoggedIn = False
             <div>
