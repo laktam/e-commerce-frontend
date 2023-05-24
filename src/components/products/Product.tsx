@@ -1,11 +1,14 @@
-import { Alert, Box, Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Snackbar, Typography } from "@mui/material";
+import { Alert, Box, Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Skeleton, Snackbar, Typography } from "@mui/material";
 import ProdImg from '../../img/000.png'
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { BASE_URL } from "../../const";
 import { ProductDB } from "../../types";
+import { Buffer } from 'buffer';
+
 import { Link } from "react-router-dom";
 import React from "react";
+import bufferImage from "buffer-image";
 
 type Props = {
     img: string;
@@ -22,16 +25,24 @@ export function Product(props: Props) {
     const [open, setOpen] = useState(false)
     const [message, setMessage] = useState('')
     const [qtt, setQtt] = useState(0)
-
+    const [image, setImage] = useState('')
     useEffect(
         () => {
             axios.get(BASE_URL + 'product/quantity/' + props.product.id)
                 .then(
                     (response) => {
                         setQtt(response.data)
+
                     }
-                )
+                ).catch((err) => {
+                    console.log(err)
+                })
+            // console.log(Buffer.from(props.product.images[0]?.content?.data))
+            // console.log(props.product.images[0]?.content)
+            setImage(Buffer.from(props.product.images[0]?.content).toString('base64'))
+
         }
+
         , []
     )
 
@@ -91,59 +102,73 @@ export function Product(props: Props) {
         )
     }
 
-    return <Card sx={{ display: "inline-block", maxWidth: 300, m: 1 }}>
-        {/* href={"/product/"+ props.product.id}  */}
-        <Link to={"/product/" + props.product.id} style={{ textDecoration: 'none' }}>
-            <CardActionArea >
-                <CardMedia
-                    component="img"
-                    height=""
-                    image={ProdImg}
-                // alt="green iguana"
-                />
-                <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                        {props.product.name}
-                    </Typography>
+    return (
+        image == '' ?
+            <Card sx={{ maxWidth: 300, m: 1 }}>
+                <Skeleton animation="wave" variant="rounded" width={500} height={400} sx={{ mb: 5 }} />
+                <Skeleton variant="text" sx={{ fontSize: '5rem' }} />
+                <Skeleton animation="wave" variant="rounded" width={500} height={100} sx={{ mb: 3 }} />
+                <Skeleton animation="wave" variant="rounded" width={500} height={30} sx={{ mb: 1 }} />
+            </Card>
+            :
+            <Card sx={{ display: "inline-block", maxWidth: 300, m: 1 }}>
+                {/* href={"/product/"+ props.product.id}  */}
+                <Link to={"/product/" + props.product.id} style={{ textDecoration: 'none' }}>
+                    <CardActionArea >
+                        <CardMedia
+                            component="img"
+                            height=""
+                            // image={ProdImg}
+                            src={`data:image/jpeg;base64,${image}`}
+                        // alt="green iguana"
 
-                    <Typography variant="body2" color="text.secondary" sx={{ maxHeight: 60 ,overflow: 'hidden'}}>
-                        {props.product.description}
-                        {/* Proudct description ..... group of squamate reptiles, with over 6,000
+                        >
+                            { }
+                        </CardMedia>
+                        <CardContent>
+                            <Typography gutterBottom variant="h5" component="div">
+                                {props.product.name}
+                            </Typography>
+
+                            <Typography variant="body2" color="text.secondary" sx={{ maxHeight: 60, overflow: 'hidden' }}>
+                                {props.product.description}
+                                {/* Proudct description ..... group of squamate reptiles, with over 6,000
                         species, ranging across all continents except Antarctica */}
+                            </Typography>
+
+                        </CardContent>
+                    </CardActionArea>
+                </Link>
+                <CardActions sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <Button size="small" color="primary" onClick={addProduct} disabled={qtt <= 0}>
+                        Add to cart
+                    </Button>
+
+                    <Snackbar
+                        open={open}
+                        // onClose={handleClose}
+                        message={message}
+                        autoHideDuration={500}
+                        onClose={() => {
+                            setOpen(false)
+                        }}
+                    >
+                        <Alert severity="success">{message}</Alert>
+                    </Snackbar>
+
+                    {/* show qtt when prod not in cart */}
+                    {!props.inCart && <Typography color={'green'} >
+                        {/* {props.quantity} */}
+                        {qtt}
+                    </Typography>}
+
+                    <Typography color={'red'} >
+                        {props.product.price} $
                     </Typography>
-
-                </CardContent>
-            </CardActionArea>
-        </Link>
-        <CardActions sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Button size="small" color="primary" onClick={addProduct} disabled={qtt <= 0}>
-                Add to cart
-            </Button>
-
-            <Snackbar
-                open={open}
-                // onClose={handleClose}
-                message={message}
-                autoHideDuration={500}
-                onClose={() => {
-                    setOpen(false)
-                }}
-            >
-                <Alert severity="success">{message}</Alert>
-            </Snackbar>
-
-            {/* show qtt when prod not in cart */}
-            {!props.inCart && <Typography color={'green'} >
-                {/* {props.quantity} */}
-                {qtt}
-            </Typography>}
-
-            <Typography color={'red'} >
-                {props.product.price} $
-            </Typography>
-            {/* <Button size="small" >{props.price}</Button> */}
-        </CardActions>
-    </Card>
+                    {/* <Button size="small" >{props.price}</Button> */}
+                </CardActions>
+            </Card>
+    )
     // </Box>
 }
 

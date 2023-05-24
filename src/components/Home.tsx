@@ -24,6 +24,8 @@ export function Home(props: Props) {
         axios.get(BASE_URL + 'product/all/').then(
             (response) => {
                 setProds(response.data)
+                console.log(response.data);
+
             }
         ).catch((err) => {
             console.log(err)
@@ -35,6 +37,7 @@ export function Home(props: Props) {
         {/* <Header /> */}
         {isLoggedIn === 'true' ?
             <div>
+
                 {prods.map(
                     (prod, index) => {
                         // quantity={prod.quantity}

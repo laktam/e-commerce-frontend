@@ -1,4 +1,4 @@
-import { Button, Grid, Paper, TextField } from "@mui/material";
+import { Alert, Button, Grid, Paper, Snackbar, TextField } from "@mui/material";
 import axios from "axios";
 import { useState } from "react";
 import { BASE_URL } from "../../const";
@@ -9,10 +9,13 @@ export function AdminAddProduct() {
     const [description, setDescription] = useState('')
     const [quantity, setQuantity] = useState(0)
     const [images, setImages] = useState<FileList | null>(null)
+    const [open, setOpen] = useState(false)
 
+    const handleClose = () => {
+        setOpen(false)
+    }
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-
         setImages(e.target.files)
     }
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -20,13 +23,13 @@ export function AdminAddProduct() {
         let id = 0;
         //create product 
         // try {
-            // const product = {
-            //     name: name,
-            //     price: price,
-            //     description: description,
-            //     quantity: quantity,
+        // const product = {
+        //     name: name,
+        //     price: price,
+        //     description: description,
+        //     quantity: quantity,
 
-            // }
+        // }
         //     //this should return product id so i can  update it later adding images
         //     const res = await axios.post(BASE_URL + 'product/create'
         //         , product
@@ -69,6 +72,7 @@ export function AdminAddProduct() {
                         'Content-Type': 'multipart/form-data',
                     }
                 });
+
         } catch (error) {
             console.log(error);
 
@@ -135,6 +139,14 @@ export function AdminAddProduct() {
 
             </Grid>
         </form>
-
+        <Snackbar
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            open={open}
+            autoHideDuration={3000}
+            onClose={() => setOpen(false)}
+            message="Product Added"
+        >
+            <Alert severity="success">Product added</Alert>
+        </Snackbar>
     </Paper>
 }

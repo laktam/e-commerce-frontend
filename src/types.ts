@@ -26,6 +26,12 @@ export type ProductDB = {
         quantity: number;
     }
     description: string;
+    images: Image[];
+}
+
+export type Image = {
+    name: string;
+    content: any;
 }
 
 export type OrderDB = {
