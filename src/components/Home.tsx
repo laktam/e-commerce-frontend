@@ -5,6 +5,8 @@ import { ProductDB } from "../types";
 import axios from "axios";
 import { BASE_URL } from "../const";
 import { Grid } from "@mui/material";
+import { Buffer } from 'buffer';
+
 type Props = {
     userId: number;
     cartId: number;
@@ -19,7 +21,11 @@ export function Home(props: Props) {
     const [prods, setProds] = useState<ProductDB[]>([])
     const [isLoggedIn, setIsLoggedIn] = useState<string | null>('')
 
+
+
     useEffect(() => {
+
+
         setIsLoggedIn(localStorage.getItem('isLoggedIn'))
 
         axios.get(BASE_URL + 'product/all/').then(
@@ -36,10 +42,10 @@ export function Home(props: Props) {
         {/* props.isLoggedIn  */}
         {/* <Header /> */}
         {isLoggedIn === 'true' ?
-            <Grid container spacing={2} alignItems="flex-start">
+            <Grid container spacing={2} alignItems="flex-start" sx={{ pr: 2 }}>
                 {prods.map(
                     (prod, index) => {
-                        return <Grid item xs={12} sm={6} md={4} lg={3}>
+                        return <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
                             <Product setTotal={props.setTotal} inCart={false} key={index} img={""} description={""} product={prod} />
                         </Grid>
                     }

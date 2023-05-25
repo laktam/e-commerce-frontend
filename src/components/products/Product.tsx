@@ -45,17 +45,6 @@ export function Product(props: Props) {
     )
 
     const addProduct = async () => {
-        //cart/addProduct will decrement qtt
-        //test if product exist as an order 
-        // if so increment order qtt and decrement product qtt
-
-
-        //else add prodcut as order 
-        // and increment order qtt and decrement product qtt
-
-
-
-
         try {
             const response = await axios.put(BASE_URL + 'cart/addProduct',
                 {
@@ -77,9 +66,6 @@ export function Product(props: Props) {
             console.log(error);
 
         }
-
-
-
     }
 
     const getTotal = () => {
@@ -108,7 +94,7 @@ export function Product(props: Props) {
                 <Skeleton animation="wave" variant="rounded" width={'35%'} height={35} sx={{ mb: 0.5, mr: 1, ml: 1 }} />
             </Card>
             :
-            <Card sx={{ display: "inline-block", m: 1, width:'100%' }}>
+            <Card sx={{ display: "inline-block", m: 1, width: '100%' }}>
                 <Link to={"/product/" + props.product.id} style={{ textDecoration: 'none' }}>
                     <CardActionArea >
                         <CardMedia
@@ -116,7 +102,6 @@ export function Product(props: Props) {
                             height="300"
                             src={`data:image/jpeg;base64,${image}`}
                         >
-                            { }
                         </CardMedia>
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">

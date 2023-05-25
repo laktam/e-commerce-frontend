@@ -11,6 +11,7 @@ type SetterProps = {
     tokenSetter: React.Dispatch<React.SetStateAction<string>>;
     cartIdSetter: React.Dispatch<React.SetStateAction<number>>;
     isLoggedInSetter: React.Dispatch<React.SetStateAction<boolean>>;
+    // setIsAdmin: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export function SignInForm(props: SetterProps) {
@@ -58,6 +59,13 @@ export function SignInForm(props: SetterProps) {
             )
 
             const userId = response.data.sub;
+            //test if admin
+            if (userId === 1) {
+                localStorage.setItem('isAdmin', 'true')
+                // props.setIsAdmin(true)
+            } else {
+                localStorage.setItem('isAdmin', '')
+            }
             props.userIdSetter(userId);
             //getting user cart
             response = await axios.get(BASE_URL + 'user/cart/' + userId

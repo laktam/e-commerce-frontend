@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import { BASE_URL } from "../const"
 import { OrderDB } from "../types"
 import { Order } from "./products/Order"
-import { Fab } from "@mui/material"
+import { Fab, Grid } from "@mui/material"
 import { Link } from "react-router-dom"
 
 
@@ -33,18 +33,20 @@ export function Cart(props: Props) {
     }, [props.total])//props.total to update the order listing on the cart on evey change (when remove order is clicked)
 
     return <>
-        <div>
+        <Grid container spacing={2} alignItems="flex-start" sx={{ pr: 2 }}>
             {cartOrders.map(
                 (order, index) => {
                     // quantity={prod.quantity}
                     // return <Product setTotal={props.setTotal} inCart={true} key={index} img={""} name={prod.name} price={prod.price} description={""} prodId={prod.id}  />
-                    return <Order setTotal={props.setTotal} key={index} img={""} description={""} order={order} />
+                    return <Grid item xs={12} sm={4} md={3} lg={2}>
+                        <Order setTotal={props.setTotal} key={index} img={""} description={""} order={order} />
+                    </Grid>
                 }
             )}
 
             {/* <Fab className="fixed" variant="extended" color="primary">
                 <Link style={{color: 'white', textDecoration: 'none'}} to='/checkout'>Checkout</Link>     
             </Fab> */}
-        </div>
+        </Grid>
     </>
 }

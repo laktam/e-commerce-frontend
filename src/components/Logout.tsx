@@ -6,6 +6,7 @@ type Props = {
     isLoggedInSetter: React.Dispatch<React.SetStateAction<boolean>>;
     token: string;
     cartId: number;
+    // setIsAdmin: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export function Logout(props: Props) {
     const navigate = useNavigate()
@@ -17,6 +18,8 @@ export function Logout(props: Props) {
             localStorage.setItem('cartId', '')
             localStorage.setItem('total', '')
             props.isLoggedInSetter(false)
+            localStorage.setItem('isAdmin', '')
+            // props.setIsAdmin(false)
             navigate('/sign-in')
         }
         , []

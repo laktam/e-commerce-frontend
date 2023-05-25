@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { BASE_URL } from "../../const";
 import { OrderDB } from "../../types";
 import { Link } from "react-router-dom";
+import { Buffer } from 'buffer';
 
 
 type Props = {
@@ -21,12 +22,15 @@ export function Order(props: Props) {
     const [open, setOpen] = useState(false)
     const [message, setMessage] = useState('')
     const [qtt, setQtt] = useState(0)
+    const [image, setImage] = useState('')
+
 
     useEffect(
 
         () => {
             //init order 
             setQtt(props.order.quantity)
+            setImage(Buffer.from(props.order.product.images[0].content).toString('base64'))
         }
         ,
     )
@@ -73,14 +77,14 @@ export function Order(props: Props) {
         )
     }
 
-    return <Card sx={{ display: "inline-block", maxWidth: 300, m: 1 }}>
+    return <Card sx={{ display: "inline-block", width: '100%', m: 1 }}>
         {/* href={"/product/"+ props.product.id}  */}
         <Link to={"/product/" + props.order.product.id} style={{ textDecoration: 'none' }}>
             <CardActionArea >
-                <CardMedia sx={{maxWidth: 250}}
+                <CardMedia 
                     component="img"
-                    height=""
-                    image={ProdImg}
+                    height="200"
+                    src={`data:image/jpeg;base64,${image}`}
                 // alt="green iguana"
                 />
                 <CardContent>
@@ -107,7 +111,7 @@ export function Order(props: Props) {
                 <Alert severity="success">{message}</Alert>
             </Snackbar> */}
 
-            <Typography color={'green'} >{qtt}</Typography>
+            <Typography color={'green'} >x {qtt}</Typography>
             <Typography color={'red'} >{props.order.product.price} $</Typography>
 
         </CardActions>
