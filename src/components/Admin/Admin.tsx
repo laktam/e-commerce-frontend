@@ -19,6 +19,7 @@ type Props = {
 export function Admin(props: Props) {
     const [open, setOpen] = useState(false)//succes snackbar
     const [drawerOpen, setDrawerOpen] = useState(false)
+    const [isReady, setIsReady] = useState(false)
     const [prods, setProds] = useState<ProductDB[]>([])
     const [product, setProduct] = useState<ProductDB>()
 
@@ -75,6 +76,7 @@ export function Admin(props: Props) {
                             })
                         console.log(response.data)
                         setProduct(response.data)
+                        
                     } catch (error) {
                         console.log(error);
                     }
@@ -112,9 +114,11 @@ export function Admin(props: Props) {
             axios.get(BASE_URL + 'product/all/').then(
                 (response) => {
                     setProds(response.data)
+                    setIsReady(true)
                     console.log(response.data);
                 }
             ).catch((err) => {
+                setIsReady(true)
                 console.log(err)
             })
         }
@@ -142,7 +146,7 @@ export function Admin(props: Props) {
     return <>
         <Box sx={{ width: '100%' }}>
             {
-                prods.length == 0 ?
+                !isReady ?
                     // <Box sx={{ width: '100%' }}>
                     <LinearProgress sx={{ width: '100%' }} />
                     :

@@ -26,15 +26,16 @@ export function Product(props: Props) {
     const [image, setImage] = useState('')
     useEffect(
         () => {
-            axios.get(BASE_URL + 'product/quantity/' + props.product.id)
-                .then(
-                    (response) => {
-                        setQtt(response.data)
+            // axios.get(BASE_URL + 'product/quantity/' + props.product.id)
+            //     .then(
+            //         (response) => {
+            //             setQtt(response.data)
 
-                    }
-                ).catch((err) => {
-                    console.log(err)
-                })
+            //         }
+            //     ).catch((err) => {
+            //         console.log(err)
+            //     })
+            setQtt(props.product.quantity)
             // console.log(Buffer.from(props.product.images[0]?.content?.data))
             // console.log(props.product.images[0]?.content)
             if (props.product.images.length > 0) {
@@ -45,7 +46,7 @@ export function Product(props: Props) {
 
         , []
     )
-
+//add product to cart
     const addProduct = async () => {
         try {
             const response = await axios.put(BASE_URL + 'cart/addProduct',
@@ -102,7 +103,7 @@ export function Product(props: Props) {
                         <CardMedia
                             component="img"
                             height="300"
-                            src={`data:image/jpeg;base64,${image}`}
+                            src={`data:image/webp;base64,${image}`}
                         >
                         </CardMedia>
                         <CardContent>

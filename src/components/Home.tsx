@@ -38,9 +38,6 @@ export function Home(props: Props) {
         })
     }, [])
     return <>
-
-        {/* props.isLoggedIn  */}
-        {/* <Header /> */}
         {isLoggedIn === 'true' ?
             <Grid  container spacing={2} alignItems="flex-start" sx={{ pr: 2 }}>
                 {prods.map(
