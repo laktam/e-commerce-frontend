@@ -36,17 +36,19 @@ export function Product(props: Props) {
             //         console.log(err)
             //     })
             setQtt(props.product.quantity)
-            // console.log(Buffer.from(props.product.images[0]?.content?.data))
-            // console.log(props.product.images[0]?.content)
+
+            // if (props.product.images.length > 0) {
+            //     setImage(Buffer.from(props.product.images[0]?.content).toString('base64'))
+            // }
             if (props.product.images.length > 0) {
-                setImage(Buffer.from(props.product.images[0]?.content).toString('base64'))
+                setImage(props.product.images[0]?.content)
             }
 
         }
 
         , []
     )
-//add product to cart
+    //add product to cart
     const addProduct = async () => {
         try {
             const response = await axios.put(BASE_URL + 'cart/addProduct',

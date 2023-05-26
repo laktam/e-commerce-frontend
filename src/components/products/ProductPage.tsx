@@ -8,11 +8,11 @@ import { ProductDB } from "../../types";
 import Grid from '@mui/material/Grid';
 import { Buffer } from 'buffer';
 
-type Props ={
+type Props = {
     setTotal: React.Dispatch<React.SetStateAction<number>>
 }
 
-export function ProductPage(props : Props) {
+export function ProductPage(props: Props) {
     let { productId } = useParams();
     const [product, setProduct] = useState<ProductDB>()
     const [page, setPage] = useState(1)
@@ -83,8 +83,11 @@ export function ProductPage(props : Props) {
             }).then((response) => {
                 setProduct(response.data)
                 const imgs = []
+                console.log(response.data.images)
                 for (let image of response.data.images) {
-                    imgs.push(Buffer.from(image.content).toString('base64'))
+                    // imgs.push(Buffer.from(image.content).toString('base64'))
+                    imgs.push(image.content)
+
                 }
                 console.log(imgs);
 
@@ -107,15 +110,15 @@ export function ProductPage(props : Props) {
     }
 
     return <>
-    {/* columns={16} */}
+        {/* columns={16} */}
         <Grid container spacing={2} alignItems="flex-start" >
-            <Grid item xs={12}  md={6} lg={5}>
+            <Grid item xs={12} md={6} lg={5}>
                 <Paper sx={{ m: 1, p: 1 }}>
                     <Stack spacing={2} alignItems="center">
                         <CardMedia
                             component="img"
                             height="450"
-                            src={`data:image/jpeg;base64,${images[page - 1]}`}
+                            src={`data:image/webp;base64,${images[page - 1]}`}
                         />
                         <Pagination sx={{ textAlign: 'center' }} count={images.length} color="primary" page={page} onChange={handleChange} />
                     </Stack>
