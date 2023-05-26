@@ -3,19 +3,24 @@ import axios from 'axios';
 import { BASE_URL } from '../../const';
 import { useEffect, useState } from 'react';
 import { ProductDB } from '../../types';
-import { Box, Button, Drawer, LinearProgress } from '@mui/material';
+import { Alert, Backdrop, Box, Button, Drawer, Grid, LinearProgress, Paper, Snackbar } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { AdminAddProduct } from './AdminAddProduct';
+import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
+
+type Props = {
+    setbackDropOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    setDelPrdId: React.Dispatch<React.SetStateAction<number>>;
+    updateTable: boolean;
+}
 
 
-
-
-export function Admin() {
-
+export function Admin(props: Props) {
+    const [open, setOpen] = useState(false)//succes snackbar
     const [drawerOpen, setDrawerOpen] = useState(false)
     const [prods, setProds] = useState<ProductDB[]>([])
-    const [editProdId, setEditProdId] = useState(0)
+    const [product, setProduct] = useState<ProductDB>()
 
 
     const columns: GridColDef[] = [
@@ -55,13 +60,25 @@ export function Admin() {
             headerName: "Edit",
             sortable: false,
             renderCell: (params) => {
-                const onClick = (e: any) => {
+                const onClick = async (e: any) => {
                     e.stopPropagation(); // don't select this row after clicking
                     console.log(params.id);
-                    const api: GridApi = params.api;
+                    // const api: GridApi = params.api;
 
-                    console.log(api.getRow(params.id))
-                    setEditProdId(Number(params.id))
+                    //getting product 
+                    try {
+                        const response = await axios.get(BASE_URL + 'product/' + params.id
+                            , {
+                                headers: {
+                                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                                }
+                            })
+                        console.log(response.data)
+                        setProduct(response.data)
+                    } catch (error) {
+                        console.log(error);
+                    }
+                    // console.log(api.getRow(params.id))
                     setDrawerOpen(true)
                 };
 
@@ -76,10 +93,12 @@ export function Admin() {
                 const onClick = (e: any) => {
                     e.stopPropagation(); // don't select this row after clicking
                     console.log(params.id);
-                    const api: GridApi = params.api;
-                    api.getRow(params.id)
-                };
+                    // const api: GridApi = params.api;
+                    // api.getRow(params.id)
+                    props.setDelPrdId(Number(params.id))
+                    props.setbackDropOpen(true)
 
+                };
                 return <Button onClick={onClick}><DeleteIcon color='error' /></Button>;
             }
         },
@@ -99,7 +118,7 @@ export function Admin() {
                 console.log(err)
             })
         }
-        , []
+        , [drawerOpen, props.updateTable]
     )
 
     const toggleDrawer =
@@ -112,42 +131,67 @@ export function Admin() {
                 ) {
                     return;
                 }
-
                 setDrawerOpen(open);
             };
 
+    const addProduct = () => {
+        setProduct(undefined)
+        setDrawerOpen(true)
+    }
 
     return <>
-        <Box sx={{ maxHeight: 1000, width: '100%' }}>
+        <Box sx={{ width: '100%' }}>
             {
                 prods.length == 0 ?
                     // <Box sx={{ width: '100%' }}>
                     <LinearProgress sx={{ width: '100%' }} />
                     :
-                    <DataGrid
-                        sx={{}}
-                        rows={prods}
-                        columns={columns}
-                        initialState={{
-                            pagination: {
-                                paginationModel: {
-                                    pageSize: 10,
+                    <>
+                        <Button sx={{ m: 2 }} variant="contained" onClick={addProduct} >add product</Button>
+                        <DataGrid
+                            sx={{}}
+                            rows={prods}
+                            columns={columns}
+                            initialState={{
+                                pagination: {
+                                    paginationModel: {
+                                        pageSize: 10,
+                                    },
                                 },
-                            },
-                        }}
-                        pageSizeOptions={[10]}
-                        // checkboxSelection
-                        disableRowSelectionOnClick
-                    />
-            }
+                            }}
+                            pageSizeOptions={[10]}
+                            // checkboxSelection
+                            disableRowSelectionOnClick
+                        />
+                        <Drawer
+                            PaperProps={{
+                                sx: {
+                                    width: '45%',
+                                    height: '100%',
+                                    padding: '2'
 
+                                }
+                            }}
+                            anchor='left'
+                            open={drawerOpen}
+                            onClose={toggleDrawer(false)}
+                        >
+                            <Box sx={{ p: 2, width: '100%', mt: 15 }}>
+                                <AdminAddProduct setOpen={setOpen} setDrawerOpen={setDrawerOpen} product={product} />
+                            </Box>
+                        </Drawer>
+                        <Snackbar
+                            anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                            open={open}
+                            autoHideDuration={3000}
+                            onClose={() => setOpen(false)}
+                            message="Product Added"
+                        >
+                            <Alert icon={false} severity="success" ><DoneOutlineIcon color="success" />Done</Alert>
+                        </Snackbar>
+
+                    </>
+            }
         </Box>
-        <Drawer
-            anchor='left'
-            open={drawerOpen}
-            onClose={toggleDrawer(false)}
-        >
-            <AdminAddProduct />
-        </Drawer>
     </>
 }

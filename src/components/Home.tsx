@@ -30,7 +30,7 @@ export function Home(props: Props) {
 
         axios.get(BASE_URL + 'product/all/').then(
             (response) => {
-                setProds(response.data)
+                setProds(response.data.reverse())
                 console.log(response.data);
             }
         ).catch((err) => {
@@ -42,7 +42,7 @@ export function Home(props: Props) {
         {/* props.isLoggedIn  */}
         {/* <Header /> */}
         {isLoggedIn === 'true' ?
-            <Grid container spacing={2} alignItems="flex-start" sx={{ pr: 2 }}>
+            <Grid  container spacing={2} alignItems="flex-start" sx={{ pr: 2 }}>
                 {prods.map(
                     (prod, index) => {
                         return <Grid item key={index} xs={12} sm={6} md={4} lg={3}>

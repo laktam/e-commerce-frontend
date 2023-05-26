@@ -38,8 +38,8 @@ export function Cart(props: Props) {
                 (order, index) => {
                     // quantity={prod.quantity}
                     // return <Product setTotal={props.setTotal} inCart={true} key={index} img={""} name={prod.name} price={prod.price} description={""} prodId={prod.id}  />
-                    return <Grid item xs={12} sm={4} md={3} lg={2}>
-                        <Order setTotal={props.setTotal} key={index} img={""} description={""} order={order} />
+                    return <Grid key={index} item xs={12} sm={4} md={3} lg={2}>
+                        <Order setTotal={props.setTotal} img={""} description={""} order={order} />
                     </Grid>
                 }
             )}

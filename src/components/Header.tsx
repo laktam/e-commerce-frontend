@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { Button, Typography } from '@mui/material';
 import { Buffer } from 'buffer';
+import { blue } from '@mui/material/colors';
 
 
 type Props = {
@@ -20,7 +21,7 @@ export function Header(props: Props) {
     const navigate = useNavigate()
 
     const adminButton = () => {
-        navigate('admin')
+        navigate('/admin')
     }
 
     const parseJwt = (token: any) => {
@@ -55,7 +56,8 @@ export function Header(props: Props) {
                 {/* isLoggedIn === 'true' */}
                 {isLoggedIn === 'true'
                     ? <>
-                        {isAdmin && <Nav.Item as={NavLink} to=''><Button  variant="contained" onClick={adminButton} >Admin</Button></Nav.Item>}
+                        {/* <Button variant="contained" onClick={adminButton} >Admin</Button> */}
+                        {isAdmin && <Nav.Item as={NavLink} to='/admin'>Admin</Nav.Item>}
                         <Nav.Item as={NavLink} to='/cart'><Typography sx={{ mr: 0.5 }} color={'red'}>{total} $</Typography><ShoppingCartIcon /></Nav.Item>
                         <Nav.Item as={NavLink} to='/logout'>logout</Nav.Item>
                     </>

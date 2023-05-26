@@ -11,11 +11,13 @@ import { ProductPage } from './products/ProductPage';
 import Checkout from './Checkout/Checkout';
 import { Btn } from './Checkout/Btn';
 import { AdminAddProduct } from './Admin/AdminAddProduct';
-import { SpeedDial, SpeedDialAction, SpeedDialIcon } from '@mui/material';
+import { Backdrop, Button, Grid, Paper, SpeedDial, SpeedDialAction, SpeedDialIcon, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ListIcon from '@mui/icons-material/List';
 import { Admin } from './Admin/Admin';
+import axios from 'axios';
+import { BASE_URL } from '../const';
 
 
 // const actions = [
@@ -33,11 +35,31 @@ function App() {
     const [total, setTotal] = useState(0)
     const [open, setOpen] = useState(false)
     const navigate = useNavigate()
+    const [backDropOpen, setbackDropOpen] = useState(false)
+    const [delPrdId, setDelPrdId] = useState(0)
+    const [updateTable, setUpdateTable] = useState(false)
     // const [isAdmin, setIsAdmin] = useState(false)
 
     useEffect(() => {
         setTotal(Number(localStorage.getItem('total')))
     },)
+
+    const deleteProduct = async () => {
+        try {
+            await axios.delete(BASE_URL + 'product/delete/' + delPrdId, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            })
+            setUpdateTable(!updateTable)
+
+        } catch (error) {
+            console.log(error);
+
+        }
+
+
+    }
 
     return (
         <div className="App">
@@ -65,7 +87,28 @@ function App() {
                     } />
                     <Route path="/product/:productId" element={<><Header total={total} /><ProductPage setTotal={setTotal} /></>} />
                     <Route path="/checkout" element={<><Header total={total} /><Checkout /></>} />
-                    <Route path="/admin" element={<><Header total={total} /><div className='container'><Admin /></div></>} />
+                    <Route path="/admin" element={
+                        <>
+                            <Header total={total} />
+                            <div className='container'>
+                                <Admin setDelPrdId={setDelPrdId} updateTable={updateTable} setbackDropOpen={setbackDropOpen} />
+                            </div>
+                            <Backdrop
+                                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                                open={backDropOpen}
+                                onClick={() => setbackDropOpen(false)}
+
+                            >
+                                <Paper sx={{ p: 1 }}>
+                                    {/* sx={{ width: '100' }} */}
+                                    <Grid rowGap={2} spacing={1} justifyContent="flex-end" container>
+                                        <Grid item xs={8}><Typography variant='h6' >delete product</Typography> </Grid>
+                                        <Grid item xs={5}><Button variant="outlined" >cancel</Button></Grid>
+                                        <Grid item xs={4}><Button onClick={deleteProduct} variant="contained">ok</Button></Grid>
+                                    </Grid>
+                                </Paper>
+                            </Backdrop>
+                        </>} />
                 </Routes >
             </div>
             {/* <SpeedDial

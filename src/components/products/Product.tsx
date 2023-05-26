@@ -37,7 +37,9 @@ export function Product(props: Props) {
                 })
             // console.log(Buffer.from(props.product.images[0]?.content?.data))
             // console.log(props.product.images[0]?.content)
-            setImage(Buffer.from(props.product.images[0]?.content).toString('base64'))
+            if (props.product.images.length > 0) {
+                setImage(Buffer.from(props.product.images[0]?.content).toString('base64'))
+            }
 
         }
 
