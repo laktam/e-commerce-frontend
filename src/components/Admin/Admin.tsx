@@ -176,7 +176,7 @@ export function Admin(props: Props) {
                             open={drawerOpen}
                             onClose={toggleDrawer(false)}
                         >
-                            <Box sx={{ p: 2, width: '100%', mt: 15 }}>
+                            <Box sx={{ p: 2, width: '100%', mt: 5 }}>
                                 <AdminAddProduct setOpen={setOpen} setDrawerOpen={setDrawerOpen} product={product} />
                             </Box>
                         </Drawer>

@@ -99,9 +99,9 @@ function App() {
                                 onClick={() => setbackDropOpen(false)}
 
                             >
-                                <Paper sx={{ p: 1 }}>
+                                <Paper sx={{ pt: 1, pb: 1 }}  >
                                     {/* sx={{ width: '100' }} */}
-                                    <Grid rowGap={2} spacing={1} justifyContent="flex-end" container>
+                                    <Grid sx={{ width: 230 }} rowGap={1} spacing={1} justifyContent="center" container>
                                         <Grid item xs={8}><Typography variant='h6' >delete product</Typography> </Grid>
                                         <Grid item xs={5}><Button variant="outlined" >cancel</Button></Grid>
                                         <Grid item xs={4}><Button onClick={deleteProduct} variant="contained">ok</Button></Grid>
