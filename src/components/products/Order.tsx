@@ -1,4 +1,4 @@
-import { Alert, Box, Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Snackbar, Typography } from "@mui/material";
+import { Alert, Box, Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Skeleton, Snackbar, Typography } from "@mui/material";
 import ProdImg from '../../img/000.png'
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -30,6 +30,7 @@ export function Order(props: Props) {
         () => {
             //init order 
             setQtt(props.order.quantity)
+            // setImage(props.order.product.images[0].content)
             setImage(Buffer.from(props.order.product.images[0].content).toString('base64'))
         }
         ,
@@ -81,12 +82,18 @@ export function Order(props: Props) {
         {/* href={"/product/"+ props.product.id}  */}
         <Link to={"/product/" + props.order.product.id} style={{ textDecoration: 'none' }}>
             <CardActionArea >
-                <CardMedia 
-                    component="img"
-                    height="200"
-                    src={`data:image/jpeg;base64,${image}`}
-                // alt="green iguana"
-                />
+                {image === ''
+                    ?
+                    <Skeleton animation="wave" variant="rounded" height={200} width={'100%'} sx={{ mb: 1.5 }} />
+                    :
+                    <CardMedia
+                        component="img"
+                        height="200"
+                        src={`data:image/jpeg;base64,${image}`}
+                    // alt="green iguana"
+                    />
+                }
+
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="div">
                         {props.order.product.name}

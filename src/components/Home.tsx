@@ -39,7 +39,7 @@ export function Home(props: Props) {
     }, [])
     return <>
         {isLoggedIn === 'true' ?
-            <Grid  container spacing={2} alignItems="flex-start" sx={{ pr: 2 }}>
+            <Grid container spacing={2} alignItems="flex-start" sx={{ pr: 10, pl: 10 }}>
                 {prods.map(
                     (prod, index) => {
                         return <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
