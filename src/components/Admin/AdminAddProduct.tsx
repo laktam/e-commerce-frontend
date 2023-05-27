@@ -54,7 +54,6 @@ export function AdminAddProduct(props: Props) {
 
             if (props.product !== undefined) {
                 //if we are editing
-                console.log('****************')
                 const product = {
                     id: props.product.id,
                     name: name,
@@ -62,7 +61,6 @@ export function AdminAddProduct(props: Props) {
                     description: description,
                     quantity: quantity,
                 }
-                console.log(props.product)
                 data.append('product', JSON.stringify(product))
                 const res = await axios.put(BASE_URL + 'product/update/'
                     , data
@@ -103,7 +101,6 @@ export function AdminAddProduct(props: Props) {
             }
         } catch (error) {
             console.log(error);
-
         }
     }
     // 👇 files is not an array, but it's iterable, spread to get an array of files

@@ -5,7 +5,6 @@ import { ProductDB } from "../types";
 import axios from "axios";
 import { BASE_URL } from "../const";
 import { Grid } from "@mui/material";
-import { Buffer } from 'buffer';
 
 type Props = {
     userId: number;
@@ -27,7 +26,7 @@ export function Home(props: Props) {
 
 
         setIsLoggedIn(localStorage.getItem('isLoggedIn'))
-
+        console.log('i fire once');
         axios.get(BASE_URL + 'product/all/').then(
             (response) => {
                 setProds(response.data.reverse())

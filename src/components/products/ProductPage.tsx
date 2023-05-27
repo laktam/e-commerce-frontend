@@ -25,16 +25,6 @@ export function ProductPage(props: Props) {
     };
 
     const addProduct = async () => {
-        //cart/addProduct will decrement qtt
-        //test if product exist as an order 
-        // if so increment order qtt and decrement product qtt
-
-
-        //else add prodcut as order 
-        // and increment order qtt and decrement product qtt
-
-
-
 
         try {
             const response = await axios.put(BASE_URL + 'cart/addProduct',
@@ -138,7 +128,7 @@ export function ProductPage(props: Props) {
                     </Stack>
                 </Paper>
             </Grid>
-            <Grid item xs={1} md={1}></Grid>
+            <Grid item xs={1} md={1} ></Grid>
             <Grid container item xs={10} md={4} lg={5} spacing={5} sx={{ mt: 3 }}>
                 <Grid item xs={6}>
                     <Typography variant="h4">{product?.name}</Typography>
