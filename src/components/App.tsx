@@ -14,6 +14,7 @@ import { Backdrop, Button, Grid, Paper, SpeedDial, SpeedDialAction, SpeedDialIco
 import { Admin } from './Admin/Admin';
 import axios from 'axios';
 import { BASE_URL } from '../const';
+import { ProductDB } from '../types';
 
 
 // const actions = [
@@ -34,6 +35,7 @@ function App() {
     const [backDropOpen, setbackDropOpen] = useState(false)
     const [delPrdId, setDelPrdId] = useState(0)
     const [updateTable, setUpdateTable] = useState(false)
+    const [searchProducts, setSearchProducts] = useState<ProductDB[]>()
     // const [isAdmin, setIsAdmin] = useState(false)
 
     useEffect(() => {
@@ -61,18 +63,18 @@ function App() {
         <div className="App">
             <div>
                 <Routes>
-                    <Route path="/" element={<><Header total={total} /><Home setTotal={setTotal} isLoggedIn={isLoggedIn} cartId={cartId} userId={userId} /></>} />
+                    <Route path="/" element={<><Header setSearchProducts={setSearchProducts} total={total} /><Home setTotal={setTotal} isLoggedIn={isLoggedIn} cartId={cartId} userId={userId} searchProducts={searchProducts} /></>} />
 
-                    <Route path="/sign-up" element={<><Header /><div className='container'><SignUpForm /></div></>} />
-                    <Route path="/sign-in" element={<><Header /><div className='container'>
+                    <Route path="/sign-up" element={<><Header setSearchProducts={setSearchProducts} /><div className='container'><SignUpForm /></div></>} />
+                    <Route path="/sign-in" element={<><Header setSearchProducts={setSearchProducts} /><div className='container'>
                         {/* setIsAdmin={setIsAdmin} */}
                         <SignInForm cartIdSetter={setCartId} tokenSetter={setToken} userIdSetter={setUserId} isLoggedInSetter={setIsLoggedIn} />
                     </div></>} />
                     {/* setIsAdmin={setIsAdmin} */}
-                    <Route path="/logout" element={<><Header total={total} /><div className='container'><Logout cartId={cartId} token={token} isLoggedInSetter={setIsLoggedIn} /></div></>} />
+                    <Route path="/logout" element={<><Header setSearchProducts={setSearchProducts} total={total} /><div className='container'><Logout cartId={cartId} token={token} isLoggedInSetter={setIsLoggedIn} /></div></>} />
                     <Route path="/cart" element={
                         <>
-                            <Header total={total} />
+                            <Header setSearchProducts={setSearchProducts} total={total} />
                             <div >
                                 <Cart setTotal={setTotal} total={total} />
                             </div>
@@ -81,11 +83,11 @@ function App() {
                             </div>
                         </>
                     } />
-                    <Route path="/product/:productId" element={<><Header total={total} /><ProductPage setTotal={setTotal} /></>} />
-                    <Route path="/checkout" element={<><Header total={total} /><Checkout /></>} />
+                    <Route path="/product/:productId" element={<><Header setSearchProducts={setSearchProducts} total={total} /><ProductPage setTotal={setTotal} /></>} />
+                    <Route path="/checkout" element={<><Header setSearchProducts={setSearchProducts} total={total} /><Checkout /></>} />
                     <Route path="/admin" element={
                         <>
-                            <Header total={total} />
+                            <Header setSearchProducts={setSearchProducts} total={total} />
                             <div className='container'>
                                 <Admin setDelPrdId={setDelPrdId} updateTable={updateTable} setbackDropOpen={setbackDropOpen} />
                             </div>

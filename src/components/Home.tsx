@@ -10,7 +10,8 @@ type Props = {
     userId: number;
     cartId: number;
     isLoggedIn: boolean;
-    setTotal: any
+    setTotal: any;
+    searchProducts: ProductDB[] | undefined;
 }
 
 
@@ -19,25 +20,36 @@ export function Home(props: Props) {
 
     const [prods, setProds] = useState<ProductDB[]>([])
     const [isLoggedIn, setIsLoggedIn] = useState<string | null>('')
-
+    const [isEmpty, setIsEmpty] = useState(false)
 
 
     useEffect(() => {
-
-
         setIsLoggedIn(localStorage.getItem('isLoggedIn'))
-        console.log('i fire once');
-        axios.get(BASE_URL + 'product/all/').then(
-            (response) => {
-                setProds(response.data.reverse())
-                console.log(response.data);
+
+        if (props.searchProducts !== undefined) {
+            if (props.searchProducts.length === 0) {
+                setIsEmpty(true)
+            } else {
+                setIsEmpty(false)
+                setProds(props.searchProducts.reverse())
             }
-        ).catch((err) => {
-            console.log(err)
-        })
-    }, [])
+
+        } else {
+            setIsEmpty(false)
+            axios.get(BASE_URL + 'product/all/').then(
+                (response) => {
+                    setProds(response.data.reverse())
+                    console.log(response.data);
+                }
+            ).catch((err) => {
+                console.log(err)
+            })
+        }
+    }, [props.searchProducts])
+
+
     return <>
-        {isLoggedIn === 'true' ?
+        {isLoggedIn === 'true' && !isEmpty ?
             <Grid container spacing={2} alignItems="flex-start" sx={{ pr: 10, pl: 10 }}>
                 {prods.map(
                     (prod, index) => {
@@ -50,6 +62,7 @@ export function Home(props: Props) {
             :
             //isLoggedIn = False
             <div>
+                no result found
 
             </div>
         }

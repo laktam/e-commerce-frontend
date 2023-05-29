@@ -46,7 +46,7 @@ export function Product(props: Props) {
 
         }
 
-        , []
+        , [props.product]
     )
     //add product to cart
     const addProduct = async () => {

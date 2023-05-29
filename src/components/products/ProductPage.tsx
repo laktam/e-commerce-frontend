@@ -128,8 +128,9 @@ export function ProductPage(props: Props) {
                     </Stack>
                 </Paper>
             </Grid>
-            <Grid item xs={1} md={1} ></Grid>
-            <Grid container item xs={10} md={4} lg={5} spacing={5} sx={{ mt: 3 }}>
+            {/* after image */}
+            <Grid item xs={0} md={0} lg={1} ></Grid>
+            <Grid container item xs={12} md={5} lg={5} spacing={5} sx={{ mt: 3 }}>
                 <Grid item xs={6}>
                     <Typography variant="h4">{product?.name}</Typography>
                 </Grid>

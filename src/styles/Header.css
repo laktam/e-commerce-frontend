@@ -5,5 +5,18 @@
 }
 
 a.active {
-    color: blue;
+    color: rgb(68, 68, 255);
 }
+
+/* form:hover{
+    
+} */
+.noHover {
+    /* pointer-events: none; */
+    background-color: unset !important;
+    color: unset !important;
+}
+
+/* .textfield {
+    pointer-events: auto;
+} */

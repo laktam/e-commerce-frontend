@@ -3,14 +3,18 @@ import '../styles/Header.css'
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import { Button, Typography } from '@mui/material';
+import { Button, InputAdornment, TextField, Typography } from '@mui/material';
 import { Buffer } from 'buffer';
 import { blue } from '@mui/material/colors';
-
+import SearchIcon from '@mui/icons-material/Search';
+import { BASE_URL } from '../const';
+import axios from 'axios';
+import { ProductDB } from '../types';
 
 type Props = {
     isLoggedIn?: boolean;
     total?: number;
+    setSearchProducts: React.Dispatch<React.SetStateAction<ProductDB[] | undefined>>;
 }
 // props: IsLoggedInProps
 export function Header(props: Props) {
@@ -19,7 +23,7 @@ export function Header(props: Props) {
     const [isAdmin, setIsAdmin] = useState(false)
     const [open, setOpen] = useState(false);
     const navigate = useNavigate()
-
+    const [searchName, setSearchName] = useState('')
     const adminButton = () => {
         navigate('/admin')
     }
@@ -45,25 +49,66 @@ export function Header(props: Props) {
 
     },)
 
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        axios.get(BASE_URL + 'product/search/' + searchName)
+            .then(
+                (response) => {
+                    console.log(response);
+                    props.setSearchProducts(response.data)
+                }
+            ).catch(
+                (err) => {
+                    console.log(err);
+
+                }
+            )
+        navigate('/')
+
+
+    }
+
+    const searchStyle = {
+        backgroundColor: 'white',
+
+    }
+
     return <div>
         <Navbar>
-            <Nav>
+            <Nav appearance='tabs'>
                 {/* //NavLink  instead of Link */}
-                <Nav.Item as={NavLink} to='/'>Home</Nav.Item>
+                <Nav.Item as={NavLink} to='/' onClick={() => { props.setSearchProducts(undefined) }} ><Typography variant='h6'>Home</Typography></Nav.Item>
             </Nav>
-            <Nav pullRight>
+            <Nav appearance='tabs' pullRight style={{ display: 'flex', alignItems: 'center' }}>
                 {/* props.isLoggedIn */}
                 {/* isLoggedIn === 'true' */}
                 {isLoggedIn === 'true'
                     ? <>
                         {/* <Button variant="contained" onClick={adminButton} >Admin</Button> */}
-                        {isAdmin && <Nav.Item as={NavLink} to='/admin'>Admin</Nav.Item>}
+
+                        <form onSubmit={handleSubmit} style={{ display: 'inline-block', float: 'left' }}>
+                            <TextField label="Search" type="search" size='small'
+                                onChange={(e) => { setSearchName(e.target.value) }}
+                                value={searchName}
+                                sx={searchStyle}
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <SearchIcon />
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                        </form>
+
+                        {isAdmin && <Nav.Item as={NavLink} to='/admin'><Typography variant='h6'>Admin</Typography></Nav.Item>}
                         <Nav.Item as={NavLink} to='/cart'><Typography sx={{ mr: 0.5 }} color={'red'}>{total} $</Typography><ShoppingCartIcon /></Nav.Item>
-                        <Nav.Item as={NavLink} to='/logout'>logout</Nav.Item>
+                        <Nav.Item as={NavLink} to='/logout' onClick={() => { props.setSearchProducts(undefined) }}><Typography variant='h6'>logout</Typography></Nav.Item>
                     </>
                     : <>
-                        <Nav.Item as={NavLink} to='/sign-in'>Sign In</Nav.Item>
-                        <Nav.Item as={NavLink} to='/sign-up'>Sign up</Nav.Item>
+                        <Nav.Item as={NavLink} to='/sign-in' ><Typography variant='h6'>Sign In</Typography></Nav.Item>
+                        <Nav.Item as={NavLink} to='/sign-up'><Typography variant='h6'>Sign Up</Typography></Nav.Item>
                     </>
                 }
             </Nav>
