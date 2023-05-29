@@ -4,7 +4,9 @@ import { Product } from "./products/Product";
 import { ProductDB } from "../types";
 import axios from "axios";
 import { BASE_URL } from "../const";
-import { Grid } from "@mui/material";
+import { Container, Grid } from "@mui/material";
+import NoResults from '../img/noresults.png'
+import { useNavigate } from "react-router-dom";
 
 type Props = {
     userId: number;
@@ -12,6 +14,7 @@ type Props = {
     isLoggedIn: boolean;
     setTotal: any;
     searchProducts: ProductDB[] | undefined;
+    searchName: string
 }
 
 
@@ -19,34 +22,58 @@ type Props = {
 export function Home(props: Props) {
 
     const [prods, setProds] = useState<ProductDB[]>([])
+    const [allProds, setAllProds] = useState<ProductDB[]>([])
     const [isLoggedIn, setIsLoggedIn] = useState<string | null>('')
     const [isEmpty, setIsEmpty] = useState(false)
-
+    const navigate = useNavigate()
 
     useEffect(() => {
         setIsLoggedIn(localStorage.getItem('isLoggedIn'))
 
-        if (props.searchProducts !== undefined) {
-            if (props.searchProducts.length === 0) {
-                setIsEmpty(true)
-            } else {
+        // if (props.searchProducts !== undefined) {
+        //     if (props.searchProducts.length === 0) {
+        //         setIsEmpty(true)
+        //     } else {
+        //         setIsEmpty(false)
+        //         setAllProds(props.searchProducts.reverse())
+        //         setProds(props.searchProducts.reverse())
+        //     }
+
+        // } else {
+        setIsEmpty(false)
+        console.log('all***********');
+
+        axios.get(BASE_URL + 'product/all/').then(
+            (response) => {
+                setAllProds(response.data.reverse())
+                setProds(response.data.reverse())
+                console.log(response.data);
                 setIsEmpty(false)
-                setProds(props.searchProducts.reverse())
             }
+        ).catch((err) => {
+            console.log(err)
+        })
+        // }
+    }, [])//[props.searchProducts]
 
-        } else {
-            setIsEmpty(false)
-            axios.get(BASE_URL + 'product/all/').then(
-                (response) => {
-                    setProds(response.data.reverse())
-                    console.log(response.data);
+    useEffect(
+        () => {
+            navigate('/')
+            console.log(`In Home search : ${props.searchName}`)
+            if (props.searchName.length == 0) {
+                setProds(allProds)
+            } else {
+                const result = allProds.filter((prod) => prod.name.toLowerCase().includes(props.searchName.toLowerCase()))
+                setProds(result)
+                if (result.length == 0) {
+                    setIsEmpty(true)
+                } else {
+                    setIsEmpty(false)
                 }
-            ).catch((err) => {
-                console.log(err)
-            })
+            }
         }
-    }, [props.searchProducts])
-
+        , [props.searchName]
+    )
 
     return <>
         {isLoggedIn === 'true' && !isEmpty ?
@@ -62,8 +89,9 @@ export function Home(props: Props) {
             :
             //isLoggedIn = False
             <div>
-                no result found
-
+                <Container maxWidth={"sm"} sx={{ mt: 5 }}>
+                    <img src={NoResults} />
+                </Container>
             </div>
         }
 

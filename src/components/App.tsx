@@ -36,6 +36,7 @@ function App() {
     const [delPrdId, setDelPrdId] = useState(0)
     const [updateTable, setUpdateTable] = useState(false)
     const [searchProducts, setSearchProducts] = useState<ProductDB[]>()
+    const [searchName, setSearchName] = useState('')
     // const [isAdmin, setIsAdmin] = useState(false)
 
     useEffect(() => {
@@ -63,7 +64,7 @@ function App() {
         <div className="App">
             <div>
                 <Routes>
-                    <Route path="/" element={<><Header setSearchProducts={setSearchProducts} total={total} /><Home setTotal={setTotal} isLoggedIn={isLoggedIn} cartId={cartId} userId={userId} searchProducts={searchProducts} /></>} />
+                    <Route path="/" element={<><Header setSearchName={setSearchName} setSearchProducts={setSearchProducts} total={total} /><Home searchName={searchName} setTotal={setTotal} isLoggedIn={isLoggedIn} cartId={cartId} userId={userId} searchProducts={searchProducts} /></>} />
 
                     <Route path="/sign-up" element={<><Header setSearchProducts={setSearchProducts} /><div className='container'><SignUpForm /></div></>} />
                     <Route path="/sign-in" element={<><Header setSearchProducts={setSearchProducts} /><div className='container'>
@@ -71,10 +72,10 @@ function App() {
                         <SignInForm cartIdSetter={setCartId} tokenSetter={setToken} userIdSetter={setUserId} isLoggedInSetter={setIsLoggedIn} />
                     </div></>} />
                     {/* setIsAdmin={setIsAdmin} */}
-                    <Route path="/logout" element={<><Header setSearchProducts={setSearchProducts} total={total} /><div className='container'><Logout cartId={cartId} token={token} isLoggedInSetter={setIsLoggedIn} /></div></>} />
+                    <Route path="/logout" element={<><Header setSearchName={setSearchName} setSearchProducts={setSearchProducts} total={total} /><div className='container'><Logout cartId={cartId} token={token} isLoggedInSetter={setIsLoggedIn} /></div></>} />
                     <Route path="/cart" element={
                         <>
-                            <Header setSearchProducts={setSearchProducts} total={total} />
+                            <Header total={total} />
                             <div >
                                 <Cart setTotal={setTotal} total={total} />
                             </div>
@@ -83,11 +84,11 @@ function App() {
                             </div>
                         </>
                     } />
-                    <Route path="/product/:productId" element={<><Header setSearchProducts={setSearchProducts} total={total} /><ProductPage setTotal={setTotal} /></>} />
-                    <Route path="/checkout" element={<><Header setSearchProducts={setSearchProducts} total={total} /><Checkout /></>} />
+                    <Route path="/product/:productId" element={<><Header setSearchName={setSearchName} setSearchProducts={setSearchProducts} total={total} /><ProductPage setTotal={setTotal} /></>} />
+                    <Route path="/checkout" element={<><Header setSearchName={setSearchName} setSearchProducts={setSearchProducts} total={total} /><Checkout /></>} />
                     <Route path="/admin" element={
                         <>
-                            <Header setSearchProducts={setSearchProducts} total={total} />
+                            <Header setSearchName={setSearchName} setSearchProducts={setSearchProducts} total={total} />
                             <div className='container'>
                                 <Admin setDelPrdId={setDelPrdId} updateTable={updateTable} setbackDropOpen={setbackDropOpen} />
                             </div>
