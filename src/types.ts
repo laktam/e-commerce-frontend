@@ -29,6 +29,12 @@ export type ProductDB = {
     images: Image[];
 }
 
+export type Category = {
+    id: number;
+    name: string;
+    products: ProductDB[];
+}
+
 export type Image = {
     name: string;
     content: any;

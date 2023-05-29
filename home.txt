@@ -1,0 +1,106 @@
+import { useEffect, useState } from "react";
+import '../styles/Home.css'
+import { Product } from "./products/Product";
+import { ProductDB } from "../types";
+import axios from "axios";
+import { BASE_URL } from "../const";
+import { Container, Grid } from "@mui/material";
+import NoResults from '../img/noresults.png'
+import { useNavigate } from "react-router-dom";
+
+type Props = {
+    userId: number;
+    cartId: number;
+    isLoggedIn: boolean;
+    setTotal: any;
+    searchProducts: ProductDB[] | undefined;
+    searchName: string
+}
+
+
+
+export function Home(props: Props) {
+
+    const [prods, setProds] = useState<ProductDB[]>([])
+    const [allProds, setAllProds] = useState<ProductDB[]>([])
+    const [isLoggedIn, setIsLoggedIn] = useState<string | null>('')
+    const [isEmpty, setIsEmpty] = useState(false)
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        setIsLoggedIn(localStorage.getItem('isLoggedIn'))
+
+        // if (props.searchProducts !== undefined) {
+        //     if (props.searchProducts.length === 0) {
+        //         setIsEmpty(true)
+        //     } else {
+        //         setIsEmpty(false)
+        //         setAllProds(props.searchProducts.reverse())
+        //         setProds(props.searchProducts.reverse())
+        //     }
+
+        // } else {
+        setIsEmpty(false)
+        console.log('all***********');
+
+        axios.get(BASE_URL + 'product/all/').then(
+            (response) => {
+                setAllProds(response.data.reverse())
+                setProds(response.data.reverse())
+                console.log(response.data);
+                setIsEmpty(false)
+            }
+        ).catch((err) => {
+            console.log(err)
+        })
+        // }
+    }, [])//[props.searchProducts]
+
+    useEffect(
+        () => {
+            navigate('/')
+            console.log(`In Home search : ${props.searchName}`)
+            if (props.searchName.length == 0) {
+                setProds(allProds)
+            } else {
+                const result = allProds.filter((prod) => prod.name.toLowerCase().includes(props.searchName.toLowerCase()))
+                setProds(result)
+                if (result.length == 0) {
+                    setIsEmpty(true)
+                } else {
+                    setIsEmpty(false)
+                }
+            }
+        }
+        , [props.searchName]
+    )
+
+    return <>
+        {isLoggedIn === 'true' && !isEmpty ?
+            <Grid container spacing={2} alignItems="flex-start" sx={{ pr: 10, pl: 10 }}>
+                {prods.map(
+                    (prod, index) => {
+                        return <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
+                            <Product setTotal={props.setTotal} inCart={false} key={index} img={""} description={""} product={prod} />
+                        </Grid>
+                    }
+                )}
+            </Grid>
+            :
+            //isLoggedIn = False
+            <div>
+                <Container maxWidth={"sm"} sx={{ mt: 5 }}>
+                    <img src={NoResults} />
+                </Container>
+            </div>
+        }
+
+        {/* <div className='footer'>footer</div> */}
+    </>
+
+
+
+}
+{/* <h2>user id : {userId}</h2>
+                <h2>cart id : {cartId}</h2> */}
+{/* <Product img={""} name={''} price={0} description={""} /> */ }
