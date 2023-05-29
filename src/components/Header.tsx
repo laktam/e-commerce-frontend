@@ -65,7 +65,31 @@ export function Header(props: Props) {
                 }
             )
         navigate('/')
+    }
 
+
+    useEffect(
+        ()=>{
+            console.log(searchName);
+            
+            axios.get(BASE_URL + 'product/search/' + searchName)
+                .then(
+                    (response) => {
+                        console.log(response);
+                        props.setSearchProducts(response.data)
+                    }
+                ).catch(
+                    (err) => {
+                        console.log(err);
+    
+                    }
+                )
+            navigate('/')
+        },[searchName]
+    )
+
+    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchName(e.target.value)
 
     }
 
@@ -89,7 +113,9 @@ export function Header(props: Props) {
 
                         <form onSubmit={handleSubmit} style={{ display: 'inline-block', float: 'left' }}>
                             <TextField label="Search" type="search" size='small'
-                                onChange={(e) => { setSearchName(e.target.value) }}
+                                // (e) => { setSearchName(e.target.value) }
+                                // onChange={handleSearchChange}
+                                onInput={handleSearchChange}
                                 value={searchName}
                                 sx={searchStyle}
                                 InputProps={{
