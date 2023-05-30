@@ -4,11 +4,10 @@ import { Product } from "./products/Product";
 import { Category, ProductDB } from "../types";
 import axios from "axios";
 import { BASE_URL } from "../const";
-import { Container, Divider, Drawer, Grid, List, ListItem, ListItemButton, ListItemText, Stack, Toolbar, Typography } from "@mui/material";
+import { Container, Divider, Grid, List, ListItem, ListItemButton, ListItemText, Stack, Toolbar, Typography } from "@mui/material";
 import NoResults from '../img/noresults.png'
 import { useNavigate } from "react-router-dom";
 import AnchorLink from "react-anchor-link-smooth-scroll";
-import { setConstantValue } from "typescript";
 
 
 type Props = {
@@ -24,13 +23,10 @@ type Props = {
 
 export function Home(props: Props) {
 
-    const [prods, setProds] = useState<ProductDB[]>([])
-    const [allProds, setAllProds] = useState<ProductDB[]>([])
     const [isLoggedIn, setIsLoggedIn] = useState<string | null>('')
     const [isEmpty, setIsEmpty] = useState(false)
     const [categories, setCategories] = useState<Category[]>([])//contain search products
     const [allCategories, setAllCategories] = useState<Category[]>([])//contain ll products
-    const [searchCatergory, setSearchCategory] = useState('')
     const [stackDisplay, setStackDisplay] = useState<'none' | 'inline'>('inline')
     const navigate = useNavigate()
 
@@ -153,7 +149,7 @@ export function Home(props: Props) {
         {isLoggedIn === 'true' && !isEmpty ?
             <Grid container spacing={0}>
                 <Grid item xs={1} >
-                    <Stack spacing={0} sx={{ display: stackDisplay }}>
+                    <Stack spacing={0} sx={{ display: stackDisplay, position: 'sticky', top: 0 }}>
                         {drawerItems}
                     </Stack>
                 </Grid>

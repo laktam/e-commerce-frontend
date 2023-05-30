@@ -1,5 +1,4 @@
-import { Alert, Box, Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Skeleton, Snackbar, Typography } from "@mui/material";
-import ProdImg from '../../img/000.png'
+import {  Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Skeleton, Snackbar, Typography } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { BASE_URL } from "../../const";
@@ -16,30 +15,25 @@ type Props = {
     prodId?: number;
     setTotal: any;
     order: OrderDB;
-    // quantity: number | string;
 }
 export function Order(props: Props) {
-    const [open, setOpen] = useState(false)
-    const [message, setMessage] = useState('')
     const [qtt, setQtt] = useState(0)
     const [image, setImage] = useState('')
 
 
     useEffect(
-
         () => {
             //init order 
             setQtt(props.order.quantity)
-            // setImage(props.order.product.images[0].content)
-            setImage(Buffer.from(props.order.product.images[0].content).toString('base64'))
+            setImage(props.order.product.images[0].content)
+            // setImage(Buffer.from(props.order.product.images[0].content).toString('base64'))
         }
-        ,
+        , //<-------------|
     )
 
 
 
     const removeFromCart = () => {
-
         axios.delete(BASE_URL + 'cart/delOrder/' + localStorage.getItem('cartId') + '/' + props.order.id
             , {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
@@ -48,16 +42,15 @@ export function Order(props: Props) {
             (response) => {
 
                 //this also change total in UI
+                console.log(response.data);
+                setQtt(response.data)
                 getTotal()
-                // setQtt(response.data) qtt is set on the useEffect 
-                setMessage('product removed')
-                // setOpen(true)
             }
         ).catch(
             (err) => {
                 console.log(err);
             }
-        )
+        )  
     }
 
     const getTotal = () => {

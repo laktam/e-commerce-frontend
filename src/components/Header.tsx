@@ -1,13 +1,11 @@
 import { Navbar, Nav } from 'rsuite';
 import '../styles/Header.css'
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import {  NavLink, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import { Button, InputAdornment, TextField, Typography } from '@mui/material';
+import {  InputAdornment, TextField, Typography } from '@mui/material';
 import { Buffer } from 'buffer';
 import SearchIcon from '@mui/icons-material/Search';
-import { BASE_URL } from '../const';
-import axios from 'axios';
 import { ProductDB } from '../types';
 
 type Props = {

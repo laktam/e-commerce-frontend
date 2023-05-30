@@ -1,9 +1,8 @@
-import { Alert, Button, FormControl, Grid, InputLabel, MenuItem, Paper, Select, SelectChangeEvent, Snackbar, TextField } from "@mui/material";
+import {  Button, FormControl, Grid, InputLabel, MenuItem, Paper, Select, SelectChangeEvent,  TextField } from "@mui/material";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { BASE_URL } from "../../const";
 import { Category, ProductDB } from "../../types";
-import { log } from "console";
 
 type Props = {
     product?: ProductDB;

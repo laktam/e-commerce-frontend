@@ -1,9 +1,9 @@
-import { DataGrid, GridApi, GridColDef, GridValueGetterParams, useGridApiContext } from '@mui/x-data-grid';
+import { DataGrid,  GridColDef } from '@mui/x-data-grid';
 import axios from 'axios';
 import { BASE_URL } from '../../const';
 import { useEffect, useState } from 'react';
 import { ProductDB } from '../../types';
-import { Alert, Backdrop, Box, Button, Drawer, Grid, LinearProgress, Paper, Snackbar } from '@mui/material';
+import { Alert,  Box, Button, Drawer,  LinearProgress,  Snackbar } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { AdminAddProduct } from './AdminAddProduct';
