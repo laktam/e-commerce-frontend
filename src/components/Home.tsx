@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import '../styles/Home.css'
 import { Product } from "./products/Product";
 import { Category, ProductDB } from "../types";
@@ -8,6 +8,7 @@ import { Container, Divider, Drawer, Grid, List, ListItem, ListItemButton, ListI
 import NoResults from '../img/noresults.png'
 import { useNavigate } from "react-router-dom";
 import AnchorLink from "react-anchor-link-smooth-scroll";
+import { setConstantValue } from "typescript";
 
 
 type Props = {
@@ -27,7 +28,10 @@ export function Home(props: Props) {
     const [allProds, setAllProds] = useState<ProductDB[]>([])
     const [isLoggedIn, setIsLoggedIn] = useState<string | null>('')
     const [isEmpty, setIsEmpty] = useState(false)
-    const [categories, setCategories] = useState<Category[]>([])
+    const [categories, setCategories] = useState<Category[]>([])//contain search products
+    const [allCategories, setAllCategories] = useState<Category[]>([])//contain ll products
+    const [searchCatergory, setSearchCategory] = useState('')
+    const [stackDisplay, setStackDisplay] = useState<'none' | 'inline'>('inline')
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -36,6 +40,7 @@ export function Home(props: Props) {
         setIsEmpty(false)
         axios.get(BASE_URL + 'product/categories/').then(
             (response) => {
+                setAllCategories(response.data)
                 setCategories(response.data)
                 console.log('categories ***********************');
                 console.log(response.data);
@@ -51,11 +56,28 @@ export function Home(props: Props) {
             navigate('/')
             console.log(`In Home search : ${props.searchName}`)
             if (props.searchName.length == 0) {
-                setProds(allProds)
+                setStackDisplay('inline')
+                setCategories(allCategories)
+                setIsEmpty(false)
             } else {
-                const result = allProds.filter((prod) => prod.name.toLowerCase().includes(props.searchName.toLowerCase()))
-                setProds(result)
-                if (result.length == 0) {
+                setStackDisplay('none')
+                let results: ProductDB[] = []
+                for (let cat of allCategories) {
+                    results = results.concat(
+                        cat.products.filter((prod) => prod.name.toLowerCase().includes(props.searchName.toLowerCase()))
+                    )
+                }
+                const resultCats = [{
+                    id: 0,
+                    name: '',
+                    products: results,
+                }]
+                console.log(resultCats);
+
+                setCategories(resultCats)
+                // const result = allProds.filter((prod) => prod.name.toLowerCase().includes(props.searchName.toLowerCase()))
+                // setProds(result)
+                if (resultCats[0].products.length == 0) {
                     setIsEmpty(true)
                 } else {
                     setIsEmpty(false)
@@ -65,6 +87,8 @@ export function Home(props: Props) {
         , [props.searchName]
     )
 
+    // React.MouseEvent<HTMLAnchorElement>
+
 
     const drawerItems = (
         <div>
@@ -72,10 +96,18 @@ export function Home(props: Props) {
             <Divider />
             <List>
                 {
-                    categories.map((category) => (//return ??????????
-                        <AnchorLink href={'#' + category.name} >
+
+
+                    allCategories.map((category) => (//return ??????????
+                        <AnchorLink key={category.id} href={'#' + category.name} onClick={
+                            () => {
+                                setCategories(allCategories)
+                            }
+
+                        }>
                             <ListItem key={category.name} disablePadding>
-                                <ListItemText primary={category.name} />
+                                {/* <ListItemText primary={category.name} /> */}
+                                <Typography variant="h5">{category.name}</Typography>
                             </ListItem>
                             <Divider />
                         </AnchorLink>
@@ -89,7 +121,6 @@ export function Home(props: Props) {
                     // ))
                 }
             </List>
-            <Divider />
             {/* <List>
             {['All mail', 'Trash', 'Spam'].map((text, index) => (
               <ListItem key={text} disablePadding>
@@ -121,8 +152,8 @@ export function Home(props: Props) {
 
         {isLoggedIn === 'true' && !isEmpty ?
             <Grid container spacing={0}>
-                <Grid item xs={1}>
-                    <Stack spacing={0}>
+                <Grid item xs={1} >
+                    <Stack spacing={0} sx={{ display: stackDisplay }}>
                         {drawerItems}
                     </Stack>
                 </Grid>
@@ -130,7 +161,7 @@ export function Home(props: Props) {
                     {
                         categories.map(
                             (category) => {
-                                return <div style={{ width: '100%' }} id={category.name}>
+                                return <div key={category.id} style={{ width: '100%' }} id={category.name}>
                                     <Grid item xs={12}>
                                         <Typography align="center" variant="h3" gutterBottom> {category.name}</Typography>
                                     </Grid>
@@ -162,7 +193,7 @@ export function Home(props: Props) {
             :
             //isLoggedIn = False
             <div>
-                <Container maxWidth={"sm"} sx={{ mt: 5 }}>
+                <Container maxWidth={"sm"} sx={{ mt: 10 }}>
                     <img src={NoResults} />
                 </Container>
             </div>
@@ -173,7 +204,56 @@ export function Home(props: Props) {
 
 
 
+    // useEffect(
+    //     () => {
+    //         navigate('/')
+    //         console.log(`In Home search : ${props.searchName}`)
+    //         if (props.searchName.length == 0) {
+    //             setProds(allProds)
+    //             setIsEmpty(false)
+    //         } else {
+    //             const result = allProds.filter((prod) => prod.name.toLowerCase().includes(props.searchName.toLowerCase()))
+    //             setProds(result)
+    //             if (result.length == 0) {
+    //                 setIsEmpty(true)
+    //             } else {
+    //                 setIsEmpty(false)
+    //             }
+    //         }
+    //     }
+    //     , [props.searchName]
+    // )
 }
-{/* <h2>user id : {userId}</h2>
-                <h2>cart id : {cartId}</h2> */}
-{/* <Product img={""} name={''} price={0} description={""} /> */ }
+// useEffect(
+//     () => {
+//         navigate('/')
+//         console.log(`In Home search : ${props.searchName}`)
+//         console.log(allCategories)
+//         if (props.searchName.length == 0) {
+//             setCategories(allCategories)
+//             setIsEmpty(false)
+//         } else {
+//             const cats = allCategories.filter(
+//                 (category) => {
+//                     return category.name == searchCatergory
+//                 }
+//             )
+
+//             cats[0].products = cats[0].products.filter(
+//                 (prd) => prd.name.toLowerCase().includes(props.searchName.toLowerCase())
+//             )
+//             console.log('****************');
+//             console.log(cats);
+
+//             setCategories(cats)
+//             // const result = allProds.filter((prod) => prod.name.toLowerCase().includes(props.searchName.toLowerCase()))
+//             // setProds(prds)
+//             if (cats[0].products.length == 0) {
+//                 setIsEmpty(true)
+//             } else {
+//                 setIsEmpty(false)
+//             }
+//         }
+//     }
+//     , [props.searchName]
+// )

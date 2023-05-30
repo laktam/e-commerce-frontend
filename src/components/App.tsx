@@ -75,7 +75,7 @@ function App() {
                     <Route path="/logout" element={<><Header setSearchName={setSearchName} setSearchProducts={setSearchProducts} total={total} /><div className='container'><Logout cartId={cartId} token={token} isLoggedInSetter={setIsLoggedIn} /></div></>} />
                     <Route path="/cart" element={
                         <>
-                            <Header total={total} />
+                            <Header setSearchName={setSearchName} total={total} />
                             <div >
                                 <Cart setTotal={setTotal} total={total} />
                             </div>

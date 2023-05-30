@@ -27,6 +27,7 @@ export type ProductDB = {
     }
     description: string;
     images: Image[];
+    category: Category;
 }
 
 export type Category = {

@@ -1,8 +1,9 @@
-import { Alert, Button, Grid, Paper, Snackbar, TextField } from "@mui/material";
+import { Alert, Button, FormControl, Grid, InputLabel, MenuItem, Paper, Select, SelectChangeEvent, Snackbar, TextField } from "@mui/material";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { BASE_URL } from "../../const";
-import { ProductDB } from "../../types";
+import { Category, ProductDB } from "../../types";
+import { log } from "console";
 
 type Props = {
     product?: ProductDB;
@@ -16,26 +17,41 @@ export function AdminAddProduct(props: Props) {
     const [description, setDescription] = useState('')
     const [quantity, setQuantity] = useState(0)
     const [images, setImages] = useState<FileList | null>(null)
-
-
+    const [category, setCategory] = useState('')
+    const [categories, setCategories] = useState<Category[]>([])
     const aRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
+        //get names of categories
+        axios.get(BASE_URL + 'product/categories',
+
+        ).then(
+            (response) => {
+                setCategories(response.data);
+            }
+        ).catch(
+            (err) => console.log(err)
+        )
+
         if (props.product !== undefined) {
             setPrice(props.product.price)
             setDescription(props.product.description)
             setName(props.product.name)
             setQuantity(props.product.quantity)
+            setCategory(props.product.category.name)
         }
     }, [])
+
+    const handleCatergoryChange = (event: SelectChangeEvent) => {
+        setCategory(event.target.value as string);
+    }
+
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setImages(e.target.files)
     }
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
-
 
         const product = {
             name: name,
@@ -47,6 +63,7 @@ export function AdminAddProduct(props: Props) {
         files.forEach((file, i) => {
             data.append(`files`, file);//, file.name
         });
+        data.append('category', category)
         // data.append('product', JSON.stringify(product))
 
         try {
@@ -54,6 +71,7 @@ export function AdminAddProduct(props: Props) {
 
             if (props.product !== undefined) {
                 //if we are editing
+
                 const product = {
                     id: props.product.id,
                     name: name,
@@ -95,6 +113,7 @@ export function AdminAddProduct(props: Props) {
             setDescription('')
             setImages(null)
             setQuantity(0)
+            setCategory('')
 
             if (aRef.current !== null) {
                 aRef.current.value = '';
@@ -154,6 +173,27 @@ export function AdminAddProduct(props: Props) {
                         required
                     />
                 </Grid>
+
+                <Grid item xs={4}>
+                    <FormControl fullWidth>
+                        <InputLabel id="select-category">Category</InputLabel>
+                        <Select
+                            labelId="simple-select-label"
+                            id="simple-select"
+                            value={category}
+                            label="Category"
+                            onChange={handleCatergoryChange}
+                        >
+                            {/* get categories */}
+                            {categories.map(
+                                (category) => {
+                                    return <MenuItem key={category.name} value={category.name}>{category.name}</MenuItem>
+                                }
+                            )}
+                        </Select>
+                    </FormControl>
+                </Grid>
+
                 <Grid item xs={12}>
                     <TextField
                         fullWidth

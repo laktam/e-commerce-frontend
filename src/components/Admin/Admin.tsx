@@ -76,7 +76,7 @@ export function Admin(props: Props) {
                             })
                         console.log(response.data)
                         setProduct(response.data)
-                        
+
                     } catch (error) {
                         console.log(error);
                     }
@@ -86,7 +86,7 @@ export function Admin(props: Props) {
 
                 return <Button onClick={onClick}><EditIcon /></Button>;
             }
-        },
+        },    
         {
             field: "delete",
             headerName: "Delete",
@@ -151,7 +151,7 @@ export function Admin(props: Props) {
                     <LinearProgress sx={{ width: '100%' }} />
                     :
                     <>
-                        <Button sx={{ m: 2 }} variant="contained" onClick={addProduct} >add product</Button>
+                        <Button sx={{ mt: 5, mb: 2 }} variant="contained" onClick={addProduct} >add product</Button>
                         <DataGrid
                             sx={{}}
                             rows={prods}
@@ -159,11 +159,11 @@ export function Admin(props: Props) {
                             initialState={{
                                 pagination: {
                                     paginationModel: {
-                                        pageSize: 10,
+                                        pageSize: 8,
                                     },
                                 },
                             }}
-                            pageSizeOptions={[10]}
+                            pageSizeOptions={[8]}
                             // checkboxSelection
                             disableRowSelectionOnClick
                         />
