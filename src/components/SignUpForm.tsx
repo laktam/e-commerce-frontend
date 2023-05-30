@@ -1,11 +1,10 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { User } from "../types";
 // import TextField from "@mui/material/TextField";
 // import Button from '@mui/material/Button';
 import { TextField, Button } from '@mui/material';
-import { Header } from "./Header";
 
 
 

@@ -1,8 +1,7 @@
 import { Alert, Button, TextField } from "@mui/material";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Header } from "./Header";
 import { BASE_URL } from "../const";
 
 

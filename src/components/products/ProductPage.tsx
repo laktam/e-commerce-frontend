@@ -1,6 +1,5 @@
-import { Box, Button, CardMedia, Container, LinearProgress, Pagination, Paper, Rating, Skeleton, Slider, Stack, Tab, Tabs, Typography } from "@mui/material";
+import { Box, Button, CardMedia, LinearProgress, Pagination, Paper, Rating, Skeleton,  Stack, Tab, Tabs, Typography } from "@mui/material";
 import axios from "axios";
-import '../../styles/slider.css'
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { BASE_URL } from "../../const";

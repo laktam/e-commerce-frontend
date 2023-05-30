@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import  { useEffect, useState } from "react";
 import '../styles/Home.css'
 import { Product } from "./products/Product";
 import { Category, ProductDB } from "../types";
 import axios from "axios";
 import { BASE_URL } from "../const";
-import { Container, Divider, Grid, List, ListItem, ListItemButton, ListItemText, Stack, Toolbar, Typography } from "@mui/material";
+import { Container, Divider, Grid, List, ListItem, Stack, Toolbar, Typography } from "@mui/material";
 import NoResults from '../img/noresults.png'
 import { useNavigate } from "react-router-dom";
 import AnchorLink from "react-anchor-link-smooth-scroll";
@@ -38,9 +38,7 @@ export function Home(props: Props) {
             (response) => {
                 setAllCategories(response.data)
                 setCategories(response.data)
-                console.log('categories ***********************');
-                console.log(response.data);
-                setIsEmpty(false)
+                
             }
         ).catch((err) => {
             console.log(err)
@@ -84,16 +82,12 @@ export function Home(props: Props) {
     )
 
     // React.MouseEvent<HTMLAnchorElement>
-
-
     const drawerItems = (
         <div>
             <Toolbar />
             <Divider />
             <List>
                 {
-
-
                     allCategories.map((category) => (//return ??????????
                         <AnchorLink key={category.id} href={'#' + category.name} onClick={
                             () => {
@@ -110,42 +104,15 @@ export function Home(props: Props) {
 
                     )
                     )
-                    // ['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                    //   <ListItem key={text} disablePadding>
-                    //       <ListItemText primary={text} />
-                    //   </ListItem>
-                    // ))
                 }
             </List>
-            {/* <List>
-            {['All mail', 'Trash', 'Spam'].map((text, index) => (
-              <ListItem key={text} disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>
-                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                  </ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List> */}
+          
         </div >
     );
 
 
     return <>
-        {/* <Drawer
-            variant="permanent"
-            sx={{
-                // display: { xs: 'none', sm: 'block' },
-                '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 100 },
-            }}
-            open
-        >
-            {drawerItems}
-        </Drawer> */}
-
-
+     
         {isLoggedIn === 'true' && !isEmpty ?
             <Grid container spacing={0}>
                 <Grid item xs={1} >
@@ -153,7 +120,7 @@ export function Home(props: Props) {
                         {drawerItems}
                     </Stack>
                 </Grid>
-                <Grid item xs={11}>
+                <Grid item xs={11} >
                     {
                         categories.map(
                             (category) => {
@@ -162,7 +129,6 @@ export function Home(props: Props) {
                                         <Typography align="center" variant="h3" gutterBottom> {category.name}</Typography>
                                     </Grid>
                                     <Grid container spacing={2} alignItems="flex-start" sx={{ pr: 10, pl: 10 }}>
-
                                         {category.products.map(
                                             (prod, index) => {
                                                 return <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
@@ -170,21 +136,13 @@ export function Home(props: Props) {
                                                 </Grid>
                                             }
                                         )}
-
                                     </Grid>
                                 </div>
-
                             }
                         )
                     }
                 </Grid>
-                {/* {prods.map(
-                    (prod, index) => {
-                        return <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
-                            <Product setTotal={props.setTotal} inCart={false} key={index} img={""} description={""} product={prod} />
-                        </Grid>
-                    }
-                )} */}
+                
             </Grid>
             :
             //isLoggedIn = False

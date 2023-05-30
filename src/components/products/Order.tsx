@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { BASE_URL } from "../../const";
 import { OrderDB } from "../../types";
 import { Link } from "react-router-dom";
-import { Buffer } from 'buffer';
 
 
 type Props = {
