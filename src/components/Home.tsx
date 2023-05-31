@@ -124,10 +124,18 @@ export function Home(props: Props) {
                         categories.map(
                             (category) => {
                                 return <div key={category.id} style={{ width: '100%' }} id={category.name}>
-                                    <Grid item xs={12}>
+                                    <Grid container justifyContent="space-between" alignItems="flex-end" item xs={12}>
                                         {/* variant="h3" */}
-                                        <Typography sx={{ typography: { xs: 'h4', md: 'h3' } }} align="center" gutterBottom> {category.name}</Typography>
-                                        <Typography align="right"><Link to={'products/' + category.name}><Button size="small" variant="text">see more</Button></Link></Typography>
+                                        <Grid item xs></Grid>
+                                        <Grid item xs={9}>
+                                            <Typography sx={{ typography: { xs: 'h4', md: 'h3' } }} align="center" > {category.name}</Typography>
+                                        </Grid>
+                                        <Grid item xs><Typography align="right">
+                                            <Link to={'products/' + category.name}>
+                                                <Button size="small" variant="text">see more</Button>
+                                            </Link>
+                                        </Typography></Grid>
+
 
                                     </Grid>
                                     <Grid container spacing={2} alignItems="flex-start" sx={{ pl: 5, pr: 10 }}>
