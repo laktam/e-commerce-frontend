@@ -1,4 +1,4 @@
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import '../styles/Home.css'
 import { Product } from "./products/Product";
 import { Category, ProductDB } from "../types";
@@ -38,7 +38,7 @@ export function Home(props: Props) {
             (response) => {
                 setAllCategories(response.data)
                 setCategories(response.data)
-                
+
             }
         ).catch((err) => {
             console.log(err)
@@ -82,7 +82,7 @@ export function Home(props: Props) {
     )
 
     // React.MouseEvent<HTMLAnchorElement>
-    const drawerItems = (
+    const sideBarItems = (
         <div>
             <Toolbar />
             <Divider />
@@ -97,7 +97,7 @@ export function Home(props: Props) {
                         }>
                             <ListItem key={category.name} disablePadding>
                                 {/* <ListItemText primary={category.name} /> */}
-                                <Typography variant="h5">{category.name}</Typography>
+                                <Typography sx={{ typography: { xs: 'subtitle2', sm: 'h6', md: 'h5' } }}>{category.name}</Typography>
                             </ListItem>
                             <Divider />
                         </AnchorLink>
@@ -106,30 +106,31 @@ export function Home(props: Props) {
                     )
                 }
             </List>
-          
+
         </div >
     );
 
 
     return <>
-     
+
         {isLoggedIn === 'true' && !isEmpty ?
             <Grid container spacing={0}>
-                <Grid item xs={1} >
+                <Grid item xs={1.7} >
                     <Stack spacing={0} sx={{ display: stackDisplay, position: 'sticky', top: 0 }}>
-                        {drawerItems}
+                        {sideBarItems}
                     </Stack>
                 </Grid>
-                <Grid item xs={11} >
+                <Grid item xs={10.3} >
                     {
                         categories.map(
                             (category) => {
                                 return <div key={category.id} style={{ width: '100%' }} id={category.name}>
                                     <Grid item xs={12}>
-                                        <Typography align="center" variant="h3" gutterBottom> {category.name}</Typography>
+                                        {/* variant="h3" */}
+                                        <Typography sx={{ typography: { xs: 'h4', md: 'h3' } }} align="center" gutterBottom> {category.name}</Typography>
                                     </Grid>
-                                    <Grid container spacing={2} alignItems="flex-start" sx={{ pr: 10, pl: 10 }}>
-                                        {category.products.map(
+                                    <Grid container spacing={2} alignItems="flex-start" sx={{ pl: 5, pr: 10 }}>
+                                        {category.products.reverse().slice(0, 4).map(
                                             (prod, index) => {
                                                 return <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
                                                     <Product setTotal={props.setTotal} inCart={false} key={index} img={""} description={""} product={prod} />
@@ -142,7 +143,7 @@ export function Home(props: Props) {
                         )
                     }
                 </Grid>
-                
+
             </Grid>
             :
             //isLoggedIn = False

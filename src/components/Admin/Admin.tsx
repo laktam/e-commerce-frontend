@@ -58,6 +58,28 @@ export function Admin(props: Props) {
             //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
         },
         {
+            field: 'category',
+            headerName: 'Category',
+            //   description: 'This column has a value getter and is not sortable.',
+            valueGetter: ({ row }) => {
+                const product = prods.filter((product) => {
+                    return product.id == row.id
+                })
+
+                try {
+                    return product[0].category.name
+                } catch (error) {
+                    console.log(error);
+                }
+
+            },
+            editable: false,
+            sortable: false,
+            width: 120,
+            //   valueGetter: (params: GridValueGetterParams) =>
+            //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+        },
+        {
             field: "action",
             headerName: "Edit",
             sortable: false,
