@@ -14,7 +14,8 @@ import { Backdrop, Button, Grid, Paper, SpeedDial, SpeedDialAction, SpeedDialIco
 import { Admin } from './Admin/Admin';
 import axios from 'axios';
 import { BASE_URL } from '../const';
-import { ProductDB } from '../types';
+import { Category, ProductDB } from '../types';
+import { CategoryPage } from './products/CategoryPage';
 
 
 // const actions = [
@@ -37,7 +38,21 @@ function App() {
     const [updateTable, setUpdateTable] = useState(false)
     const [searchProducts, setSearchProducts] = useState<ProductDB[]>()
     const [searchName, setSearchName] = useState('')
-    // const [isAdmin, setIsAdmin] = useState(false)
+    const [allCategories, setAllCategories] = useState<Category[]>([])//contain ll products
+
+
+    // getting all categories
+    useEffect(() => {
+        axios.get(BASE_URL + 'product/categories/').then(
+            (response) => {
+                setAllCategories(response.data)
+            }
+        ).catch((err) => {
+            console.log(err)
+        })
+    }, [])
+
+
 
     useEffect(() => {
         setTotal(Number(localStorage.getItem('total')))
@@ -54,17 +69,21 @@ function App() {
 
         } catch (error) {
             console.log(error);
-
         }
-
-
     }
 
     return (
         <div className="App">
             <div>
                 <Routes>
-                    <Route path="/" element={<><Header setSearchName={setSearchName} setSearchProducts={setSearchProducts} total={total} /><Home searchName={searchName} setTotal={setTotal} isLoggedIn={isLoggedIn} cartId={cartId} userId={userId} searchProducts={searchProducts} /></>} />
+                    <Route element={<><Header setSearchName={setSearchName} setSearchProducts={setSearchProducts} total={total} /></>} >
+                        <Route path="/" element={<Home searchName={searchName} setTotal={setTotal} isLoggedIn={isLoggedIn} cartId={cartId} userId={userId} searchProducts={searchProducts} />} />
+                        {
+                            allCategories.map((category) => {
+                                return <Route key={category.name} path={'/products/' + category.name} element={< CategoryPage setTotal={setTotal} category={category} />}></Route>
+                            })
+                        }
+                    </Route>
 
                     <Route path="/sign-up" element={<><Header setSearchProducts={setSearchProducts} /><div className='container'><SignUpForm /></div></>} />
                     <Route path="/sign-in" element={<><Header setSearchProducts={setSearchProducts} /><div className='container'>
@@ -85,6 +104,7 @@ function App() {
                         </>
                     } />
                     <Route path="/product/:productId" element={<><Header setSearchName={setSearchName} setSearchProducts={setSearchProducts} total={total} /><ProductPage setTotal={setTotal} /></>} />
+
                     <Route path="/checkout" element={<><Header setSearchName={setSearchName} setSearchProducts={setSearchProducts} total={total} /><Checkout /></>} />
                     <Route path="/admin" element={
                         <>
@@ -108,7 +128,9 @@ function App() {
                                 </Paper>
                             </Backdrop>
                         </>} />
+
                 </Routes >
+
             </div>
             {/* <SpeedDial
                 ariaLabel="SpeedDial basic example"

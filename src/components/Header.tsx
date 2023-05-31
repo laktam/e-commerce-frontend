@@ -1,9 +1,9 @@
 import { Navbar, Nav } from 'rsuite';
 import '../styles/Header.css'
-import {  NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import {  InputAdornment, TextField, Typography } from '@mui/material';
+import { InputAdornment, TextField, Typography } from '@mui/material';
 import { Buffer } from 'buffer';
 import SearchIcon from '@mui/icons-material/Search';
 import { ProductDB } from '../types';
@@ -149,6 +149,7 @@ export function Header(props: Props) {
         </Navbar>
         {/* <button onClick={ }>Sign Up</button>
         <button>Sign In</button> */}
+        <Outlet />
     </div>
 }
 //  {/*<Link to="/sign-in">Sign In</Link>*/}

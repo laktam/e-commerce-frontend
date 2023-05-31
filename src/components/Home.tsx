@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-import '../styles/Home.css'
 import { Product } from "./products/Product";
 import { Category, ProductDB } from "../types";
 import axios from "axios";
 import { BASE_URL } from "../const";
-import { Container, Divider, Grid, List, ListItem, Stack, Toolbar, Typography } from "@mui/material";
+import { Button, Container, Divider, Grid, List, ListItem, Stack, Toolbar, Typography } from "@mui/material";
 import NoResults from '../img/noresults.png'
-import { useNavigate } from "react-router-dom";
+import { Link, Outlet, Route, Routes, useNavigate } from "react-router-dom";
 import AnchorLink from "react-anchor-link-smooth-scroll";
 
 
@@ -112,7 +111,7 @@ export function Home(props: Props) {
 
 
     return <>
-
+        <Outlet />
         {isLoggedIn === 'true' && !isEmpty ?
             <Grid container spacing={0}>
                 <Grid item xs={1.7} >
@@ -128,6 +127,8 @@ export function Home(props: Props) {
                                     <Grid item xs={12}>
                                         {/* variant="h3" */}
                                         <Typography sx={{ typography: { xs: 'h4', md: 'h3' } }} align="center" gutterBottom> {category.name}</Typography>
+                                        <Typography align="right"><Link to={'products/' + category.name}><Button size="small" variant="text">see more</Button></Link></Typography>
+
                                     </Grid>
                                     <Grid container spacing={2} alignItems="flex-start" sx={{ pl: 5, pr: 10 }}>
                                         {category.products.reverse().slice(0, 4).map(

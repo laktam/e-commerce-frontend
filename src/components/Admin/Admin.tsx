@@ -54,8 +54,7 @@ export function Admin(props: Props) {
             editable: false,
             sortable: false,
             width: 160,
-            //   valueGetter: (params: GridValueGetterParams) =>
-            //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+            
         },
         {
             field: 'category',
@@ -76,8 +75,6 @@ export function Admin(props: Props) {
             editable: false,
             sortable: false,
             width: 120,
-            //   valueGetter: (params: GridValueGetterParams) =>
-            //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
         },
         {
             field: "action",
@@ -86,8 +83,6 @@ export function Admin(props: Props) {
             renderCell: (params) => {
                 const onClick = async (e: any) => {
                     e.stopPropagation(); // don't select this row after clicking
-                    console.log(params.id);
-                    // const api: GridApi = params.api;
 
                     //getting product 
                     try {
@@ -97,13 +92,12 @@ export function Admin(props: Props) {
                                     Authorization: `Bearer ${localStorage.getItem('token')}`
                                 }
                             })
-                        console.log(response.data)
-                        setProduct(response.data)
+
+                            setProduct(response.data)
 
                     } catch (error) {
                         console.log(error);
                     }
-                    // console.log(api.getRow(params.id))
                     setDrawerOpen(true)
                 };
 
@@ -138,7 +132,7 @@ export function Admin(props: Props) {
                 (response) => {
                     setProds(response.data)
                     setIsReady(true)
-                    console.log(response.data);
+
                 }
             ).catch((err) => {
                 setIsReady(true)
