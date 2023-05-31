@@ -1,9 +1,9 @@
-import { DataGrid,  GridColDef } from '@mui/x-data-grid';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import axios from 'axios';
 import { BASE_URL } from '../../const';
 import { useEffect, useState } from 'react';
 import { ProductDB } from '../../types';
-import { Alert,  Box, Button, Drawer,  LinearProgress,  Snackbar } from '@mui/material';
+import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Drawer, LinearProgress, Snackbar, TextField } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { AdminAddProduct } from './AdminAddProduct';
@@ -22,7 +22,8 @@ export function Admin(props: Props) {
     const [isReady, setIsReady] = useState(false)
     const [prods, setProds] = useState<ProductDB[]>([])
     const [product, setProduct] = useState<ProductDB>()
-
+    const [dialogOpen, setDialogOpen] = useState(false)
+    const [categoryName, setCategoryName] = useState('')
 
     const columns: GridColDef[] = [
         { field: 'id', headerName: 'ID', width: 90 },
@@ -86,7 +87,7 @@ export function Admin(props: Props) {
 
                 return <Button onClick={onClick}><EditIcon /></Button>;
             }
-        },    
+        },
         {
             field: "delete",
             headerName: "Delete",
@@ -142,8 +143,58 @@ export function Admin(props: Props) {
         setProduct(undefined)
         setDrawerOpen(true)
     }
+    const openDialog = () => {
+        setDialogOpen(true)
+    }
+    const handleClose = () => {
+        setDialogOpen(false)
+    }
+    const addCategory = () => {
+        axios.post(BASE_URL + 'product/addCategory',
+            {
+                categoryName: categoryName
+            }
+            ,
+            {
+                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+            }
+        ).then(
+            (response) => {
+                setCategoryName('')
+                setDialogOpen(false)
+                setOpen(true)
+            }
+        ).catch(
+            (err) => console.log(err)
+        )
+    }
 
     return <>
+        <Dialog open={dialogOpen} onClose={handleClose}>
+            <DialogTitle>Add Category</DialogTitle>
+            <DialogContent>
+                <DialogContentText>
+                    enter category name
+                </DialogContentText>
+                <TextField
+                    autoFocus
+                    value={categoryName}
+                    onChange={(e) => { setCategoryName(e.target.value) }}
+                    margin="dense"
+                    id="name"
+                    label="category"
+                    type="text"
+                    fullWidth
+                    variant="standard"
+                />
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleClose}>Cancel</Button>
+                <Button onClick={addCategory}>Add</Button>
+            </DialogActions>
+        </Dialog>
+
+
         <Box sx={{ width: '100%' }}>
             {
                 !isReady ?
@@ -152,6 +203,7 @@ export function Admin(props: Props) {
                     :
                     <>
                         <Button sx={{ mt: 5, mb: 2 }} variant="contained" onClick={addProduct} >add product</Button>
+                        <Button sx={{ mt: 5, mb: 2, ml: 2 }} variant="contained" onClick={openDialog} >add category</Button>
                         <DataGrid
                             sx={{}}
                             rows={prods}
@@ -187,7 +239,7 @@ export function Admin(props: Props) {
                         <Snackbar
                             anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
                             open={open}
-                            autoHideDuration={3000}
+                            autoHideDuration={2000}
                             onClose={() => setOpen(false)}
                             message="Product Added"
                         >
