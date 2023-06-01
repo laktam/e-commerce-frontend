@@ -144,7 +144,7 @@ export function Home(props: Props) {
                                             </Grid>
                                             <Grid item xs>
                                                 <Typography align="right">
-                                                    <Button disabled={category.products.length < 4} size="small" variant="text"
+                                                    <Button disabled={category.products.length < 5} size="small" variant="text"
                                                         onClick={() => { navigate('products/' + category.name) }}
                                                     >
                                                         see more

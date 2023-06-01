@@ -47,6 +47,25 @@ export type OrderDB = {
     quantity: number;
 }
 
+export type UserDB ={
+    id: number;
+
+    name: string;
+
+    password: string;
+
+    email: string;
+
+    cart: CartDB;
+
+}
+
+export type CartDB= {
+    id: number;
+    quantity: number;
+    orders: OrderDB[];
+}
+
 export type Card = {
     name: string;
     number: string;

@@ -42,10 +42,6 @@ export function Cart(props: Props) {
                             </Grid>
                         }
                     )}
-
-                    {/* <Fab className="fixed" variant="extended" color="primary">
-                <Link style={{color: 'white', textDecoration: 'none'}} to='/checkout'>Checkout</Link>     
-            </Fab> */}
                 </Grid>
                 :
                 <Container maxWidth={"xs"} sx={{ mt: 15, }} >

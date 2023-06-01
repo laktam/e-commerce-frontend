@@ -3,11 +3,12 @@ import axios from 'axios';
 import { BASE_URL } from '../../const';
 import { useEffect, useState } from 'react';
 import { ProductDB } from '../../types';
-import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Drawer, LinearProgress, Snackbar, TextField } from '@mui/material';
+import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Drawer, LinearProgress, Paper, Snackbar, Tab, Tabs, TextField, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { AdminAddProduct } from './AdminAddProduct';
 import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
+import { OrderData } from './OrderData';
 
 type Props = {
     setbackDropOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -24,6 +25,8 @@ export function Admin(props: Props) {
     const [product, setProduct] = useState<ProductDB>()
     const [dialogOpen, setDialogOpen] = useState(false)
     const [categoryName, setCategoryName] = useState('')
+    const [tabValue, setTabValue] = useState(0)
+
 
     const columns: GridColDef[] = [
         { field: 'id', headerName: 'ID', width: 90 },
@@ -54,7 +57,7 @@ export function Admin(props: Props) {
             editable: false,
             sortable: false,
             width: 160,
-            
+
         },
         {
             field: 'category',
@@ -93,7 +96,7 @@ export function Admin(props: Props) {
                                 }
                             })
 
-                            setProduct(response.data)
+                        setProduct(response.data)
 
                     } catch (error) {
                         console.log(error);
@@ -155,6 +158,10 @@ export function Admin(props: Props) {
                 setDrawerOpen(open);
             };
 
+    const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+        setTabValue(newValue);
+    };
+
     const addProduct = () => {
         setProduct(undefined)
         setDrawerOpen(true)
@@ -210,60 +217,90 @@ export function Admin(props: Props) {
             </DialogActions>
         </Dialog>
 
+        {/* /////////////////////////////////////// */}
+        <Paper sx={{ p: 1 }}>
+            <Tabs value={tabValue} onChange={handleTabChange} aria-label="basic tabs example">
+                <Tab label="Products" />
+                <Tab label="Orders" />
+            </Tabs>
 
-        <Box sx={{ width: '100%' }}>
-            {
-                !isReady ?
-                    // <Box sx={{ width: '100%' }}>
-                    <LinearProgress sx={{ width: '100%' }} />
-                    :
-                    <>
-                        <Button sx={{ mt: 5, mb: 2 }} variant="contained" onClick={addProduct} >add product</Button>
-                        <Button sx={{ mt: 5, mb: 2, ml: 2 }} variant="contained" onClick={openDialog} >add category</Button>
-                        <DataGrid
-                            sx={{}}
-                            rows={prods}
-                            columns={columns}
-                            initialState={{
-                                pagination: {
-                                    paginationModel: {
-                                        pageSize: 8,
-                                    },
-                                },
-                            }}
-                            pageSizeOptions={[8]}
-                            // checkboxSelection
-                            disableRowSelectionOnClick
-                        />
-                        <Drawer
-                            PaperProps={{
-                                sx: {
-                                    width: '45%',
-                                    height: '100%',
-                                    padding: '2'
+            <Box sx={{ padding: 2 }}>
+                {tabValue === 0 && (
 
-                                }
-                            }}
-                            anchor='left'
-                            open={drawerOpen}
-                            onClose={toggleDrawer(false)}
-                        >
-                            <Box sx={{ p: 2, width: '100%', mt: 5 }}>
-                                <AdminAddProduct setOpen={setOpen} setDrawerOpen={setDrawerOpen} product={product} />
-                            </Box>
-                        </Drawer>
-                        <Snackbar
-                            anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-                            open={open}
-                            autoHideDuration={2000}
-                            onClose={() => setOpen(false)}
-                            message="Product Added"
-                        >
-                            <Alert icon={false} severity="success" ><DoneOutlineIcon color="success" />Done</Alert>
-                        </Snackbar>
 
-                    </>
-            }
-        </Box>
+                    <Box sx={{ width: '100%' }}>
+                        {
+                            !isReady ?
+                                // <Box sx={{ width: '100%' }}>
+                                <LinearProgress sx={{ width: '100%' }} />
+                                :
+                                <>
+                                    <Button sx={{ mb: 2 }} variant="contained" onClick={addProduct} >add product</Button>
+                                    <Button sx={{ mb: 2, ml: 2 }} variant="contained" onClick={openDialog} >add category</Button>
+                                    <DataGrid
+                                        sx={{}}
+                                        rows={prods}
+                                        columns={columns}
+                                        initialState={{
+                                            pagination: {
+                                                paginationModel: {
+                                                    pageSize: 8,
+                                                },
+                                            },
+                                        }}
+                                        pageSizeOptions={[8]}
+                                        // checkboxSelection
+                                        disableRowSelectionOnClick
+                                    />
+
+                                    {/* <OrderData /> */}
+
+                                    <Drawer
+                                        PaperProps={{
+                                            sx: {
+                                                width: '45%',
+                                                height: '100%',
+                                                padding: '2'
+
+                                            }
+                                        }}
+                                        anchor='left'
+                                        open={drawerOpen}
+                                        onClose={toggleDrawer(false)}
+                                    >
+                                        <Box sx={{ p: 2, width: '100%', mt: 5 }}>
+                                            <AdminAddProduct setOpen={setOpen} setDrawerOpen={setDrawerOpen} product={product} />
+                                        </Box>
+                                    </Drawer>
+                                    <Snackbar
+                                        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                                        open={open}
+                                        autoHideDuration={2000}
+                                        onClose={() => setOpen(false)}
+                                        message="Product Added"
+                                    >
+                                        <Alert icon={false} severity="success" ><DoneOutlineIcon color="success" />Done</Alert>
+                                    </Snackbar>
+
+                                </>
+                        }
+                    </Box>
+
+
+
+                )}
+                {tabValue === 1 && (
+                    <Box>
+                        <OrderData />
+                    </Box>
+                )}
+
+            </Box>
+
+
+        </Paper>
+
+
+
     </>
 }

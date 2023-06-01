@@ -117,8 +117,8 @@ function App() {
                         <Route path="/checkout" element={<><Checkout /></>} />
                         <Route path="/admin" element={
                             <>
-
-                                <div className='container'>
+                                {/* className='container' */}
+                                <div >
                                     <Admin setDelPrdId={setDelPrdId} updateTable={updateTable} setbackDropOpen={setbackDropOpen} />
                                 </div>
                                 <Backdrop

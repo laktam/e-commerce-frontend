@@ -201,9 +201,11 @@ export function ProductPage(props: Props) {
                     <Box sx={{ padding: 2 }}>
                         {tabValue === 0 && (
                             <Box>
+
                                 <Typography variant="body1" color="text.secondary">
                                     {product?.description}
-                                </Typography>                            </Box>
+                                </Typography>
+                            </Box>
                         )}
                         {tabValue === 1 && (
                             <Box>
