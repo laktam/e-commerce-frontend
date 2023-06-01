@@ -35,7 +35,7 @@ export function Header(props: Props) {
         setTotal(Number(localStorage.getItem('total')))
         setIsAdmin(Boolean(localStorage.getItem('isAdmin')))
         const token = localStorage.getItem('token')
-        if (token !== '') {
+        if (token !== '' && token !== null) {
             if (parseJwt(localStorage.getItem('token')).username === 'admin') {
                 setIsAdmin(true)
             } else {
