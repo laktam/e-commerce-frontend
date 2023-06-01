@@ -106,7 +106,7 @@ export function Product(props: Props) {
                         <CardMedia
                             component="img"
                             // 240
-                            height="240"
+                            height=""
                             src={`data:image/webp;base64,${image}`}
                         >
                         </CardMedia>
