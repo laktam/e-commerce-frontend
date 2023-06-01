@@ -15,7 +15,9 @@ type Props = {
     isLoggedIn: boolean;
     setTotal: any;
     searchProducts: ProductDB[] | undefined;
-    searchName: string
+    searchName: string;
+    allCategories: Category[];
+    // setAllCategories: React.Dispatch<React.SetStateAction<Category[]>>;
 }
 
 
@@ -25,7 +27,7 @@ export function Home(props: Props) {
     const [isLoggedIn, setIsLoggedIn] = useState<string | null>('')
     const [isEmpty, setIsEmpty] = useState(false)
     const [categories, setCategories] = useState<Category[]>([])//contain search products
-    const [allCategories, setAllCategories] = useState<Category[]>([])//contain ll products
+    // const [allCategories, setAllCategories] = useState<Category[]>([])//contain ll products
     const [stackDisplay, setStackDisplay] = useState<'none' | 'inline'>('inline')
     const navigate = useNavigate()
 
@@ -33,16 +35,16 @@ export function Home(props: Props) {
         setIsLoggedIn(localStorage.getItem('isLoggedIn'))
 
         setIsEmpty(false)
-        axios.get(BASE_URL + 'product/categories/').then(
-            (response) => {
-                setAllCategories(response.data)
-                setCategories(response.data)
+        // axios.get(BASE_URL + 'product/categories/').then(
+        //     (response) => {
+        //         setAllCategories(response.data)
+        //         setCategories(response.data)
 
-            }
-        ).catch((err) => {
-            console.log(err)
-        })
-    }, [])
+        //     }
+        // ).catch((err) => {
+        //     console.log(err)
+        // })
+    }, [])// ?????????????????????????????????????????????????????????????????????????????????/no [] to update on every refresh
 
     useEffect(
         () => {
@@ -50,12 +52,12 @@ export function Home(props: Props) {
             console.log(`In Home search : ${props.searchName}`)
             if (props.searchName.length == 0) {
                 setStackDisplay('inline')
-                setCategories(allCategories)
+                setCategories(props.allCategories)
                 setIsEmpty(false)
             } else {
                 setStackDisplay('none')
                 let results: ProductDB[] = []
-                for (let cat of allCategories) {
+                for (let cat of props.allCategories) {
                     results = results.concat(
                         cat.products.filter((prod) => prod.name.toLowerCase().includes(props.searchName.toLowerCase()))
                     )
@@ -87,10 +89,10 @@ export function Home(props: Props) {
             <Divider />
             <List>
                 {
-                    allCategories.map((category) => (//return ??????????
+                    props.allCategories.map((category) => (//return ??????????
                         <AnchorLink key={category.id} href={'#' + category.name} onClick={
                             () => {
-                                setCategories(allCategories)
+                                setCategories(props.allCategories)
                             }
 
                         }>

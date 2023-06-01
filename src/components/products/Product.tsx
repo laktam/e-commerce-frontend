@@ -104,18 +104,19 @@ export function Product(props: Props) {
                     <CardActionArea >
                         <CardMedia
                             component="img"
-                            height="220"
+                            height="240"
                             src={`data:image/webp;base64,${image}`}
                         >
                         </CardMedia>
                         <CardContent>
-                            <Typography gutterBottom variant="h5" component="div">
+                        {/* gutterBottom */}
+                            <Typography  variant="h5" component="div">
                                 {props.product.name}
                             </Typography>
 
-                            <Typography variant="body2" color="text.secondary" sx={{ maxHeight: 60, overflow: 'hidden' }}>
+                            {/* <Typography variant="body2" color="text.secondary" sx={{ maxHeight: 60, overflow: 'hidden' }}>
                                 {props.product.description}
-                            </Typography>
+                            </Typography> */}
 
                         </CardContent>
                     </CardActionArea>

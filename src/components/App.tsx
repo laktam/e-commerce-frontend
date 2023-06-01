@@ -77,58 +77,56 @@ function App() {
             <div>
                 <Routes>
                     <Route element={<><Header setSearchName={setSearchName} setSearchProducts={setSearchProducts} total={total} /></>} >
-                        <Route path="/" element={<Home searchName={searchName} setTotal={setTotal} isLoggedIn={isLoggedIn} cartId={cartId} userId={userId} searchProducts={searchProducts} />} />
+                        <Route path="/" element={<Home allCategories={allCategories} searchName={searchName} setTotal={setTotal} isLoggedIn={isLoggedIn} cartId={cartId} userId={userId} searchProducts={searchProducts} />} />
                         {
                             allCategories.map((category) => {
                                 return <Route key={category.name} path={'/products/' + category.name} element={< CategoryPage setTotal={setTotal} category={category} />}></Route>
                             })
                         }
+
+
+                        <Route path="/sign-up" element={<><div className='container'><SignUpForm /></div></>} />
+                        <Route path="/sign-in" element={<><div className='container'>
+                            <SignInForm cartIdSetter={setCartId} tokenSetter={setToken} userIdSetter={setUserId} isLoggedInSetter={setIsLoggedIn} />
+                        </div></>} />
+                        <Route path="/logout" element={<><div className='container'><Logout cartId={cartId} token={token} isLoggedInSetter={setIsLoggedIn} /></div></>} />
+                        <Route path="/cart" element={
+                            <>
+
+                                <div >
+                                    <Cart setTotal={setTotal} total={total} />
+                                </div>
+                                <div className='fixed'>
+                                    <Btn />
+                                </div>
+                            </>
+                        } />
+                        <Route path="/product/:productId" element={<><ProductPage setTotal={setTotal} /></>} />
+
+                        <Route path="/checkout" element={<><Checkout /></>} />
+                        <Route path="/admin" element={
+                            <>
+
+                                <div className='container'>
+                                    <Admin setDelPrdId={setDelPrdId} updateTable={updateTable} setbackDropOpen={setbackDropOpen} />
+                                </div>
+                                <Backdrop
+                                    sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                                    open={backDropOpen}
+                                    onClick={() => setbackDropOpen(false)}
+
+                                >
+                                    <Paper sx={{ pt: 1, pb: 1 }}  >
+                                        {/* sx={{ width: '100' }} */}
+                                        <Grid sx={{ width: 230 }} rowGap={1} spacing={1} justifyContent="center" container>
+                                            <Grid item xs={8}><Typography variant='h6' >delete product</Typography> </Grid>
+                                            <Grid item xs={5}><Button variant="outlined" >cancel</Button></Grid>
+                                            <Grid item xs={4}><Button onClick={deleteProduct} variant="contained">ok</Button></Grid>
+                                        </Grid>
+                                    </Paper>
+                                </Backdrop>
+                            </>} />
                     </Route>
-
-                    <Route path="/sign-up" element={<><Header setSearchProducts={setSearchProducts} /><div className='container'><SignUpForm /></div></>} />
-                    <Route path="/sign-in" element={<><Header setSearchProducts={setSearchProducts} /><div className='container'>
-                        {/* setIsAdmin={setIsAdmin} */}
-                        <SignInForm cartIdSetter={setCartId} tokenSetter={setToken} userIdSetter={setUserId} isLoggedInSetter={setIsLoggedIn} />
-                    </div></>} />
-                    {/* setIsAdmin={setIsAdmin} */}
-                    <Route path="/logout" element={<><Header setSearchName={setSearchName} setSearchProducts={setSearchProducts} total={total} /><div className='container'><Logout cartId={cartId} token={token} isLoggedInSetter={setIsLoggedIn} /></div></>} />
-                    <Route path="/cart" element={
-                        <>
-                            <Header setSearchName={setSearchName} total={total} />
-                            <div >
-                                <Cart setTotal={setTotal} total={total} />
-                            </div>
-                            <div className='fixed'>
-                                <Btn />
-                            </div>
-                        </>
-                    } />
-                    <Route path="/product/:productId" element={<><Header setSearchName={setSearchName} setSearchProducts={setSearchProducts} total={total} /><ProductPage setTotal={setTotal} /></>} />
-
-                    <Route path="/checkout" element={<><Header setSearchName={setSearchName} setSearchProducts={setSearchProducts} total={total} /><Checkout /></>} />
-                    <Route path="/admin" element={
-                        <>
-                            <Header setSearchName={setSearchName} setSearchProducts={setSearchProducts} total={total} />
-                            <div className='container'>
-                                <Admin setDelPrdId={setDelPrdId} updateTable={updateTable} setbackDropOpen={setbackDropOpen} />
-                            </div>
-                            <Backdrop
-                                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                                open={backDropOpen}
-                                onClick={() => setbackDropOpen(false)}
-
-                            >
-                                <Paper sx={{ pt: 1, pb: 1 }}  >
-                                    {/* sx={{ width: '100' }} */}
-                                    <Grid sx={{ width: 230 }} rowGap={1} spacing={1} justifyContent="center" container>
-                                        <Grid item xs={8}><Typography variant='h6' >delete product</Typography> </Grid>
-                                        <Grid item xs={5}><Button variant="outlined" >cancel</Button></Grid>
-                                        <Grid item xs={4}><Button onClick={deleteProduct} variant="contained">ok</Button></Grid>
-                                    </Grid>
-                                </Paper>
-                            </Backdrop>
-                        </>} />
-
                 </Routes >
 
             </div>
@@ -151,3 +149,59 @@ function App() {
 }
 
 export default App;
+
+{/* <Routes>
+<Route element={<><Header setSearchName={setSearchName} setSearchProducts={setSearchProducts} total={total} /></>} >
+    <Route path="/" element={<Home allCategories={allCategories} searchName={searchName} setTotal={setTotal} isLoggedIn={isLoggedIn} cartId={cartId} userId={userId} searchProducts={searchProducts} />} />
+    {
+        allCategories.map((category) => {
+            return <Route key={category.name} path={'/products/' + category.name} element={< CategoryPage setTotal={setTotal} category={category} />}></Route>
+        })
+    }
+</Route>
+
+<Route path="/sign-up" element={<><Header setSearchProducts={setSearchProducts} /><div className='container'><SignUpForm /></div></>} />
+<Route path="/sign-in" element={<><Header setSearchProducts={setSearchProducts} /><div className='container'>
+    {/* setIsAdmin={setIsAdmin} */}
+//     <SignInForm cartIdSetter={setCartId} tokenSetter={setToken} userIdSetter={setUserId} isLoggedInSetter={setIsLoggedIn} />
+// </div></>} />
+// {/* setIsAdmin={setIsAdmin} */}
+// <Route path="/logout" element={<><Header setSearchName={setSearchName} setSearchProducts={setSearchProducts} total={total} /><div className='container'><Logout cartId={cartId} token={token} isLoggedInSetter={setIsLoggedIn} /></div></>} />
+// <Route path="/cart" element={
+//     <>
+//         <Header setSearchName={setSearchName} total={total} />
+//         <div >
+//             <Cart setTotal={setTotal} total={total} />
+//         </div>
+//         <div className='fixed'>
+//             <Btn />
+//         </div>
+//     </>
+// } />
+// <Route path="/product/:productId" element={<><Header setSearchName={setSearchName} setSearchProducts={setSearchProducts} total={total} /><ProductPage setTotal={setTotal} /></>} />
+
+// <Route path="/checkout" element={<><Header setSearchName={setSearchName} setSearchProducts={setSearchProducts} total={total} /><Checkout /></>} />
+// <Route path="/admin" element={
+//     <>
+//         <Header setSearchName={setSearchName} setSearchProducts={setSearchProducts} total={total} />
+//         <div className='container'>
+//             <Admin setDelPrdId={setDelPrdId} updateTable={updateTable} setbackDropOpen={setbackDropOpen} />
+//         </div>
+//         <Backdrop
+//             sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+//             open={backDropOpen}
+//             onClick={() => setbackDropOpen(false)}
+
+//         >
+//             <Paper sx={{ pt: 1, pb: 1 }}  >
+//                 {/* sx={{ width: '100' }} */}
+//                 <Grid sx={{ width: 230 }} rowGap={1} spacing={1} justifyContent="center" container>
+//                     <Grid item xs={8}><Typography variant='h6' >delete product</Typography> </Grid>
+//                     <Grid item xs={5}><Button variant="outlined" >cancel</Button></Grid>
+//                     <Grid item xs={4}><Button onClick={deleteProduct} variant="contained">ok</Button></Grid>
+//                 </Grid>
+//             </Paper>
+//         </Backdrop>
+//     </>} />
+
+// </Routes >
