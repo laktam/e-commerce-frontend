@@ -59,9 +59,14 @@ function App() {
     }, [])
 
 
-
     useEffect(() => {
         setTotal(Number(localStorage.getItem('total')))
+        const l = localStorage.getItem('isLoggedIn')
+        if (l === 'true') {
+            setIsLoggedIn(true)
+        } else {
+            setIsLoggedIn(false)
+        }
     },)
 
     const deleteProduct = async () => {
@@ -86,7 +91,7 @@ function App() {
                         <Route path="/" element={<Home allCategories={allCategories} searchName={searchName} setTotal={setTotal} isLoggedIn={isLoggedIn} cartId={cartId} userId={userId} searchProducts={searchProducts} />} />
                         {
                             allCategories.map((category) => {
-                                return <Route key={category.name} path={'/products/' + category.name} element={< CategoryPage setTotal={setTotal} category={category} />}></Route>
+                                return <Route key={category.name} path={'/products/' + category.name} element={< CategoryPage isLoggedIn={isLoggedIn} setTotal={setTotal} category={category} />}></Route>
                             })
                         }
 
@@ -107,7 +112,7 @@ function App() {
                                 </div>
                             </>
                         } />
-                        <Route path="/product/:productId" element={<><ProductPage setTotal={setTotal} /></>} />
+                        <Route path="/product/:productId" element={<><ProductPage isLoggedIn={isLoggedIn} setTotal={setTotal} /></>} />
 
                         <Route path="/checkout" element={<><Checkout /></>} />
                         <Route path="/admin" element={

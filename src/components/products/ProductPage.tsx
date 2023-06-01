@@ -1,4 +1,4 @@
-import { Box, Button, CardMedia, LinearProgress, Pagination, Paper, Rating, Skeleton,  Stack, Tab, Tabs, Typography } from "@mui/material";
+import { Box, Button, CardMedia, LinearProgress, Pagination, Paper, Rating, Skeleton, Stack, Tab, Tabs, Typography } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -8,6 +8,7 @@ import Grid from '@mui/material/Grid';
 
 type Props = {
     setTotal: React.Dispatch<React.SetStateAction<number>>
+    isLoggedIn: boolean;
 }
 
 export function ProductPage(props: Props) {
@@ -137,7 +138,7 @@ export function ProductPage(props: Props) {
                     <Typography variant="h4">{product?.price} $</Typography>
                 </Grid>
                 <Grid item xs={12}>
-                    <Button size="large" color="primary" variant="contained" onClick={addProduct} disabled={qtt <= 0}>
+                    <Button size="large" color="primary" variant="contained" onClick={addProduct} disabled={qtt <= 0 || !props.isLoggedIn}>
                         Add to cart
                     </Button>
                 </Grid>

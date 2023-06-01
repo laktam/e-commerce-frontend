@@ -33,7 +33,7 @@ export function Home(props: Props) {
 
     useEffect(() => {
         console.log('*********************************************************8');
-        
+
         setIsLoggedIn(localStorage.getItem('isLoggedIn'))
         setCategories(props.allCategories)
         setIsEmpty(false)
@@ -92,18 +92,21 @@ export function Home(props: Props) {
             <List>
                 {
                     props.allCategories.map((category) => (//return ??????????
-                        <AnchorLink key={category.id} href={'#' + category.name} onClick={
-                            () => {
-                                setCategories(props.allCategories)
-                            }
+                        category.products.length > 0 ?
+                            <AnchorLink key={category.id} href={'#' + category.name} onClick={
+                                () => {
+                                    setCategories(props.allCategories)
+                                }
 
-                        }>
-                            <ListItem key={category.name} disablePadding>
-                                {/* <ListItemText primary={category.name} /> */}
-                                <Typography sx={{ typography: { xs: 'subtitle2', sm: 'h6', md: 'h5' } }}>{category.name}</Typography>
-                            </ListItem>
-                            <Divider />
-                        </AnchorLink>
+                            }>
+                                <ListItem key={category.name} disablePadding>
+                                    {/* <ListItemText primary={category.name} /> */}
+                                    <Typography sx={{ typography: { xs: 'subtitle2', sm: 'h6', md: 'h5' } }}>{category.name}</Typography>
+                                </ListItem>
+                                <Divider />
+                            </AnchorLink>
+                            :
+                            <></>
 
                     )
                     )
@@ -116,7 +119,7 @@ export function Home(props: Props) {
 
     return <>
         <Outlet />
-        {props.isLoggedIn && !isEmpty ?
+        {!isEmpty ?
             <Grid container spacing={0}>
                 <Grid item xs={1.7} >
                     <Stack spacing={0} sx={{ display: stackDisplay, position: 'sticky', top: 0 }}>
@@ -127,31 +130,45 @@ export function Home(props: Props) {
                     {
                         categories.map(
                             (category) => {
-                                return <div key={category.id} style={{ width: '100%' }} id={category.name}>
-                                    <Grid container justifyContent="space-between" alignItems="flex-end" item xs={12}>
-                                        {/* variant="h3" */}
-                                        <Grid item xs></Grid>
-                                        <Grid item xs={9}>
-                                            <Typography sx={{ typography: { xs: 'h4', md: 'h3' } }} align="center" > {category.name}</Typography>
+                                if (category.products.length === 0) {
+                                    return
+                                } else {
+
+
+                                    return <div key={category.id} style={{ width: '100%' }} id={category.name}>
+                                        <Grid container justifyContent="space-between" alignItems="flex-end" item xs={12}>
+                                            {/* variant="h3" */}
+                                            <Grid item xs></Grid>
+                                            <Grid item xs={9}>
+                                                <Typography sx={{ typography: { xs: 'h4', md: 'h3' } }} align="center" > {category.name}</Typography>
+                                            </Grid>
+                                            <Grid item xs>
+                                                <Typography align="right">
+                                                    <Button disabled={category.products.length < 4} size="small" variant="text"
+                                                        onClick={() => { navigate('products/' + category.name) }}
+                                                    >
+                                                        see more
+                                                        {/* <Link to={'products/' + category.name}>
+                                                            see more
+                                                        </Link> */}
+                                                    </Button>
+
+                                                </Typography>
+                                            </Grid>
+
+
                                         </Grid>
-                                        <Grid item xs><Typography align="right">
-                                            <Link to={'products/' + category.name}>
-                                                <Button size="small" variant="text">see more</Button>
-                                            </Link>
-                                        </Typography></Grid>
-
-
-                                    </Grid>
-                                    <Grid container spacing={2} alignItems="flex-start" sx={{ pl: 5, pr: 10 }}>
-                                        {category.products.reverse().slice(0, 4).map(
-                                            (prod, index) => {
-                                                return <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
-                                                    <Product setTotal={props.setTotal} inCart={false} key={index} img={""} description={""} product={prod} />
-                                                </Grid>
-                                            }
-                                        )}
-                                    </Grid>
-                                </div>
+                                        <Grid container spacing={2} alignItems="flex-start" sx={{ pl: 5, pr: 10 }}>
+                                            {category.products.reverse().slice(0, 4).map(
+                                                (prod, index) => {
+                                                    return <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
+                                                        <Product isLoggedIn={props.isLoggedIn} setTotal={props.setTotal} inCart={false} key={index} img={""} description={""} product={prod} />
+                                                    </Grid>
+                                                }
+                                            )}
+                                        </Grid>
+                                    </div>
+                                }
                             }
                         )
                     }

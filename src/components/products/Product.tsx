@@ -17,6 +17,7 @@ type Props = {
     inCart: boolean;
     setTotal: any;
     product: ProductDB;
+    isLoggedIn: boolean;
     // quantity: number | string;
 }
 export function Product(props: Props) {
@@ -109,8 +110,8 @@ export function Product(props: Props) {
                         >
                         </CardMedia>
                         <CardContent>
-                        {/* gutterBottom */}
-                            <Typography  variant="h5" component="div">
+                            {/* gutterBottom */}
+                            <Typography variant="h5" component="div">
                                 {props.product.name}
                             </Typography>
 
@@ -122,7 +123,7 @@ export function Product(props: Props) {
                     </CardActionArea>
                 </Link>
                 <CardActions sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <Button size="small" color="primary" onClick={addProduct} disabled={qtt <= 0}>
+                    <Button size="small" color="primary" onClick={addProduct} disabled={qtt <= 0 || !props.isLoggedIn}>
                         Add to cart
                     </Button>
 

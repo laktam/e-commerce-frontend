@@ -9,6 +9,7 @@ import { Category } from "../../types"
 type Props = {
     category: Category;
     setTotal: any;
+    isLoggedIn: boolean;
 }
 
 export function CategoryPage(props: Props) {
@@ -25,7 +26,7 @@ export function CategoryPage(props: Props) {
                 {props.category.products.reverse().map(
                     (prod, index) => {
                         return <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
-                            <Product setTotal={props.setTotal} inCart={false} key={index} img={""} description={""} product={prod} />
+                            <Product isLoggedIn={props.isLoggedIn} setTotal={props.setTotal} inCart={false} key={index} img={""} description={""} product={prod} />
                         </Grid>
                     }
                 )}
