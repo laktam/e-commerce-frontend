@@ -43,6 +43,12 @@ function App() {
 
     // getting all categories
     useEffect(() => {
+        const l = localStorage.getItem('isLoggedIn')
+        if (l === 'true') {
+            setIsLoggedIn(true)
+        } else {
+            setIsLoggedIn(false)
+        }
         axios.get(BASE_URL + 'product/categories/').then(
             (response) => {
                 setAllCategories(response.data)
