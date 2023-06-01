@@ -1,10 +1,12 @@
-import { Box, Button, CardMedia, LinearProgress, Pagination, Paper, Rating, Skeleton, Stack, Tab, Tabs, Typography } from "@mui/material";
+import { Avatar, Box, Button, CardMedia, Divider, LinearProgress, ListItem, ListItemAvatar, ListItemText, Pagination, Paper, Rating, Skeleton, Stack, Tab, Tabs, TextField, Typography } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { BASE_URL } from "../../const";
 import { ProductDB } from "../../types";
 import Grid from '@mui/material/Grid';
+import { Buffer } from 'buffer';
+
 
 type Props = {
     setTotal: React.Dispatch<React.SetStateAction<number>>
@@ -19,6 +21,7 @@ export function ProductPage(props: Props) {
     const [images, setImages] = useState<string[]>([])
     const [qtt, setQtt] = useState(0)
     const [tabValue, setTabValue] = useState(0)
+    const [comment, setComment] = useState('')
 
     const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
         setTabValue(newValue);
@@ -72,6 +75,8 @@ export function ProductPage(props: Props) {
             {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             }).then((response) => {
+                console.log(response.data);
+
                 setProduct(response.data)
                 const imgs = []
                 console.log(response.data.images)
@@ -101,9 +106,33 @@ export function ProductPage(props: Props) {
         },
         height: 14,
         borderRadius: 2,
+    }
 
+    const parseJwt = (token: any) => {
+        return JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
+    }
 
-
+    const addComment = () => {
+        axios.post(BASE_URL + 'product/comment',
+            {
+                productId: productId,
+                comment: comment,
+                username: parseJwt(localStorage.getItem('token')).username
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            }).then(
+                (response) => {
+                    console.log(response.data);
+                    setComment('')
+                }
+            ).catch(
+                (err) => {
+                    console.log(err);
+                }
+            )
     }
 
     return <>
@@ -217,6 +246,52 @@ export function ProductPage(props: Props) {
 
 
                 </Paper>
+
+                {/* Comments */}
+                {props.isLoggedIn &&
+                    <Paper sx={{ p: 5, mt: 1 }}>
+                        <Typography variant="h4" align="center">Comments</Typography>
+                        <TextField
+                            id="outlined-multiline-static"
+                            label="comment"
+                            multiline
+                            minRows={2}
+                            fullWidth
+                            value={comment}
+                            onChange={(e) => { setComment(e.target.value) }}
+                        />
+                        <Button sx={{ mt: 2 }} variant="contained" onClick={addComment}>add comment</Button>
+                        {
+                            product?.comments.map(
+                                (comment) => {
+                                    // return <>
+                                    //     <Avatar>{comment.username.toUpperCase().charAt(0)}</Avatar>
+                                    //     <Stack>
+                                    //         <Typography variant="subtitle1">{comment.username}</Typography>
+                                    //         <Typography variant="body1">{comment.content}</Typography>
+                                    //     </Stack>
+                                    //     <Divider />
+                                    // </>
+                                    return <ListItem>
+                                        <ListItemAvatar>
+                                            <Avatar>{comment.username.toUpperCase().charAt(0)}</Avatar>
+                                        </ListItemAvatar>
+                                        <ListItemText primary={comment.username} secondary={comment.content} />
+                                    </ListItem>
+                                    // return <Comment>
+                                    //     <Comment.Avatar as={Avatar}> <Avatar sx={{ display: 'inline' }} variant="rounded">{comment.username.toUpperCase().charAt(0)}</Avatar></Comment.Avatar>
+                                    //     <Comment.Content>
+                                    //         <Comment.Author>{comment.username}</Comment.Author>
+                                    //         <Comment.Text>{comment.content}</Comment.Text>
+                                    //     </Comment.Content>
+                                    // </Comment>
+                                }
+                            )
+                        }
+                    </Paper>
+                }
+
+
             </Grid>
 
         </Grid>

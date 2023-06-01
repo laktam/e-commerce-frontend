@@ -28,6 +28,7 @@ export type ProductDB = {
     description: string;
     images: Image[];
     category: Category;
+    comments: Comment[];
 }
 
 export type Category = {
@@ -47,7 +48,7 @@ export type OrderDB = {
     quantity: number;
 }
 
-export type UserDB ={
+export type UserDB = {
     id: number;
 
     name: string;
@@ -60,7 +61,7 @@ export type UserDB ={
 
 }
 
-export type CartDB= {
+export type CartDB = {
     id: number;
     quantity: number;
     orders: OrderDB[];
@@ -71,4 +72,14 @@ export type Card = {
     number: string;
     expirationDate: string;
     cvv: string;
+}
+
+export type Comment = {
+    id: number;
+
+    content: string;
+
+    product: ProductDB;
+
+    username: string;
 }
