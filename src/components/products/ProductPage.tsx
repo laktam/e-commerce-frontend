@@ -22,6 +22,7 @@ export function ProductPage(props: Props) {
     const [qtt, setQtt] = useState(0)
     const [tabValue, setTabValue] = useState(0)
     const [comment, setComment] = useState('')
+    const [update, setUpdate] = useState(false)
 
     const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
         setTabValue(newValue);
@@ -94,7 +95,7 @@ export function ProductPage(props: Props) {
                 console.log(err)
             }
         )
-    }, [comment])
+    }, [update])
 
     const handleChange = (event: React.ChangeEvent<unknown>, page: number) => {
         setPage(page)
@@ -128,6 +129,7 @@ export function ProductPage(props: Props) {
                 (response) => {
                     console.log(response.data);
                     setComment('')
+                    setUpdate(!update)
                 }
             ).catch(
                 (err) => {
@@ -138,7 +140,8 @@ export function ProductPage(props: Props) {
 
     return <>
         <Grid container spacing={2} alignItems="flex-start" >
-            <Grid item xs={1} md={1}></Grid>
+            {/* <Grid item xs={1} md={1}></Grid> */}
+            <Grid item xs></Grid>
             <Grid item xs={12} md={5} lg={4}>
                 <Paper sx={{ m: 1, p: 1 }}>
                     <Stack spacing={2} alignItems="center">
@@ -160,7 +163,7 @@ export function ProductPage(props: Props) {
                 </Paper>
             </Grid>
             {/* after image */}
-            <Grid item xs={0} md={0} lg={1} ></Grid>
+            {/* <Grid item xs={0} md={0} lg={0} ></Grid> */}
             <Grid container item xs={12} md={5} lg={5} spacing={5} sx={{ mt: 3 }}>
                 <Grid item xs={6}>
                     <Typography variant="h4">{product?.name}</Typography>
@@ -222,6 +225,9 @@ export function ProductPage(props: Props) {
                     {/* </Paper> */}
                 </Grid>
             </Grid>
+            <Grid item xs></Grid>
+
+            {/* second part */}
             <Grid item xs={12}>
                 <Paper sx={{ p: 1 }}>
                     <Tabs value={tabValue} onChange={handleTabChange} aria-label="basic tabs example">
