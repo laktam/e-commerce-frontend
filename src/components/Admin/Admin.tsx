@@ -9,6 +9,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { AdminAddProduct } from './AdminAddProduct';
 import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
 import { OrderData } from './OrderData';
+import { Comments } from './Comments';
 
 type Props = {
     setbackDropOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -222,6 +223,7 @@ export function Admin(props: Props) {
             <Tabs value={tabValue} onChange={handleTabChange} aria-label="basic tabs example">
                 <Tab label="Products" />
                 <Tab label="Orders" />
+                <Tab label="Comments" />
             </Tabs>
 
             <Box sx={{ padding: 2 }}>
@@ -294,6 +296,11 @@ export function Admin(props: Props) {
                         <OrderData />
                     </Box>
                 )}
+                {
+                    tabValue === 2 && (
+                        <Comments />
+                    )
+                }
 
             </Box>
 

@@ -1,10 +1,11 @@
 import axios from "axios";
-import {  useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { User } from "../types";
 // import TextField from "@mui/material/TextField";
 // import Button from '@mui/material/Button';
 import { TextField, Button } from '@mui/material';
+import { BASE_URL } from "../const";
 
 
 
@@ -34,7 +35,7 @@ export function SignUpForm() {
         setEmailError('')
 
         axios.post(
-            'http://localhost:3001/auth/sign-up', user)
+            BASE_URL + 'auth/sign-up', user)
             .then((response) => {
                 console.log(response.data)
                 setName('')

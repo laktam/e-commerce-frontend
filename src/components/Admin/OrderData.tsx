@@ -1,8 +1,9 @@
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridEventListener } from "@mui/x-data-grid";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { BASE_URL } from "../../const";
-import { OrderDB, UserDB } from "../../types";
+import { OrderDB, ProductDB, UserDB } from "../../types";
+import { Dialog, DialogTitle, DialogContent, DialogContentText, Typography } from "@mui/material";
 
 
 
@@ -10,8 +11,8 @@ import { OrderDB, UserDB } from "../../types";
 
 export function OrderData() {
     const [users, setUsers] = useState<UserDB[]>([])
-
-
+    const [openOrderDialog, setOpenOrderDialog] = useState(false)
+    const [user, setUser] = useState<UserDB>()
 
     useEffect(() => {
         axios.get(BASE_URL + 'user/all/'
@@ -58,7 +59,7 @@ export function OrderData() {
 
                 try {
                     return user[0].cart.orders.map((order) => {
-                        return order.product.name +' x'+ order.quantity + ' '
+                        return order.product.name + ' x' + order.quantity + ' '
                     })
                 } catch (error) {
                     console.log(error);
@@ -67,16 +68,29 @@ export function OrderData() {
             },
             editable: false,
             sortable: false,
-            width: 300,
+            flex: 1,
 
         },
     ];
 
-
+    const handleEvent: GridEventListener<'cellClick'> = (
+        params,  // GridCellParams<any>
+        event,   // MuiEvent<React.MouseEvent<HTMLElement>>
+        details, // GridCallbackDetails
+    ) => {
+        if (params.field === 'orders') {
+            // setDialogComment(params.row)
+            // setProductName(params.row.product)
+            console.log(params.row);
+            setUser(params.row)
+            setOpenOrderDialog(true)
+        }
+    }
 
     return <>
         <DataGrid
-            getRowHeight={() => 'auto'}
+            onCellClick={handleEvent}
+            // getRowHeight={() => 'auto'}
             rows={users}
             columns={columns}
             initialState={{
@@ -90,5 +104,32 @@ export function OrderData() {
             // checkboxSelection
             disableRowSelectionOnClick
         />
+
+        <Dialog
+            open={openOrderDialog}
+            onClose={() => setOpenOrderDialog(false)}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+        >
+            <DialogTitle id="alert-dialog-title">
+                {user?.name + ' orders'}
+            </DialogTitle>
+            <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                    <Typography variant="body1" style={{ whiteSpace: 'pre-line' }}>
+                        {user?.cart.orders.map((order) => {
+                            return order.product.name + ' x' + order.quantity + '\n '
+                        })}
+                    </Typography>
+
+                </DialogContentText>
+            </DialogContent>
+            {/* <DialogActions>
+                <Button onClick={handleClose}>Disagree</Button>
+                <Button onClick={handleClose} autoFocus>
+                    Agree
+                </Button>
+            </DialogActions> */}
+        </Dialog>
     </>
 }

@@ -72,28 +72,29 @@ export function ProductPage(props: Props) {
 
     useEffect(() => {
         axios.get(BASE_URL + 'product/' + productId,
-            {
-                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-            }).then((response) => {
-                console.log(response.data);
+            // {
+            //     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+            // }
+        ).then((response) => {
+            console.log(response.data);
 
-                setProduct(response.data)
-                const imgs = []
-                console.log(response.data.images)
-                for (let image of response.data.images) {
-                    // imgs.push(Buffer.from(image.content).toString('base64'))
-                    imgs.push(image.content)
+            setProduct(response.data)
+            const imgs = []
+            console.log(response.data.images)
+            for (let image of response.data.images) {
+                // imgs.push(Buffer.from(image.content).toString('base64'))
+                imgs.push(image.content)
 
-                }
-                setImages(imgs)
-                setQtt(response.data.quantity)
+            }
+            setImages(imgs)
+            setQtt(response.data.quantity)
 
-            }).catch(
-                (err) => {
-                    console.log(err)
-                }
-            )
-    }, [])
+        }).catch(
+            (err) => {
+                console.log(err)
+            }
+        )
+    }, [comment])
 
     const handleChange = (event: React.ChangeEvent<unknown>, page: number) => {
         setPage(page)
@@ -173,52 +174,52 @@ export function ProductPage(props: Props) {
                     </Button>
                 </Grid>
                 <Grid item xs={12} >
-                    <Paper elevation={2} sx={{ p: 1 }} >
-                        <Grid container alignItems="center" >
-                            <Grid sx={{ mb: 3, mt: 3 }} container item xs={12}>
-                                <Grid item xs={4}><Typography color='gray' variant="h5">customer ratings</Typography></Grid>
-                                <Grid item xs={4}><Rating name="size-large" defaultValue={4} size="large" /></Grid>
-                                <Grid item xs={4}></Grid>
-                            </Grid>
-
-
-                            <Grid item xs={1}></Grid>
-                            <Grid item xs={2}><Typography color='gray' variant="h5">5 star</Typography></Grid>
-                            <Grid item xs={8}>
-                                <LinearProgress sx={progressStyle} variant="determinate" value={60} />
-                            </Grid>
-                            <Grid item xs={1}></Grid>
-
-                            <Grid item xs={1}></Grid>
-                            <Grid item xs={2}><Typography color='gray' variant="h5">4 star</Typography></Grid>
-                            <Grid item xs={8}>
-                                <LinearProgress sx={progressStyle} variant="determinate" value={5} />
-                            </Grid>
-                            <Grid item xs={1}></Grid>
-
-                            <Grid item xs={1}></Grid>
-                            <Grid item xs={2}><Typography color='gray' variant="h5">3 star</Typography></Grid>
-                            <Grid item xs={8}>
-                                <LinearProgress sx={progressStyle} variant="determinate" value={15} />
-                            </Grid>
-                            <Grid item xs={1}></Grid>
-
-                            <Grid item xs={1}></Grid>
-                            <Grid item xs={2}><Typography color='gray' variant="h5">2 star</Typography></Grid>
-                            <Grid item xs={8}>
-                                <LinearProgress sx={progressStyle} variant="determinate" value={0} />
-                            </Grid>
-                            <Grid item xs={1}></Grid>
-
-                            <Grid item xs={1}></Grid>
-                            <Grid item xs={2}><Typography color='gray' variant="h5">1 star</Typography></Grid>
-                            <Grid item xs={8}>
-                                <LinearProgress sx={progressStyle} variant="determinate" value={0} />
-                            </Grid>
-                            <Grid item xs={1}></Grid>
+                    {/* <Paper elevation={2} sx={{ p: 1 }} > */}
+                    <Grid container alignItems="center" >
+                        <Grid sx={{ mb: 3, mt: 3 }} container item xs={12}>
+                            <Grid item xs={4}><Typography color='gray' variant="h5">customer ratings</Typography></Grid>
+                            <Grid item xs={4}><Rating name="size-large" defaultValue={4} size="large" /></Grid>
+                            <Grid item xs={4}></Grid>
                         </Grid>
 
-                    </Paper>
+
+                        <Grid item xs={1}></Grid>
+                        <Grid item xs={2}><Typography color='gray' variant="h5">5 star</Typography></Grid>
+                        <Grid item xs={8}>
+                            <LinearProgress sx={progressStyle} variant="determinate" value={60} />
+                        </Grid>
+                        <Grid item xs={1}></Grid>
+
+                        <Grid item xs={1}></Grid>
+                        <Grid item xs={2}><Typography color='gray' variant="h5">4 star</Typography></Grid>
+                        <Grid item xs={8}>
+                            <LinearProgress sx={progressStyle} variant="determinate" value={5} />
+                        </Grid>
+                        <Grid item xs={1}></Grid>
+
+                        <Grid item xs={1}></Grid>
+                        <Grid item xs={2}><Typography color='gray' variant="h5">3 star</Typography></Grid>
+                        <Grid item xs={8}>
+                            <LinearProgress sx={progressStyle} variant="determinate" value={15} />
+                        </Grid>
+                        <Grid item xs={1}></Grid>
+
+                        <Grid item xs={1}></Grid>
+                        <Grid item xs={2}><Typography color='gray' variant="h5">2 star</Typography></Grid>
+                        <Grid item xs={8}>
+                            <LinearProgress sx={progressStyle} variant="determinate" value={0} />
+                        </Grid>
+                        <Grid item xs={1}></Grid>
+
+                        <Grid item xs={1}></Grid>
+                        <Grid item xs={2}><Typography color='gray' variant="h5">1 star</Typography></Grid>
+                        <Grid item xs={8}>
+                            <LinearProgress sx={progressStyle} variant="determinate" value={0} />
+                        </Grid>
+                        <Grid item xs={1}></Grid>
+                    </Grid>
+
+                    {/* </Paper> */}
                 </Grid>
             </Grid>
             <Grid item xs={12}>
@@ -231,8 +232,7 @@ export function ProductPage(props: Props) {
                     <Box sx={{ padding: 2 }}>
                         {tabValue === 0 && (
                             <Box>
-
-                                <Typography variant="body1" color="text.secondary">
+                                <Typography variant="body1" color="text.secondary" style={{ whiteSpace: 'pre-line' }}>
                                     {product?.description}
                                 </Typography>
                             </Box>
@@ -249,19 +249,20 @@ export function ProductPage(props: Props) {
                 </Paper>
 
                 {/* Comments */}
-                {props.isLoggedIn &&
+                {
                     <Paper sx={{ p: 5, mt: 1 }}>
-                        <Typography variant="h4" align="center">Comments</Typography>
-                        <TextField
-                            id="outlined-multiline-static"
-                            label="comment"
-                            multiline
-                            minRows={2}
-                            fullWidth
-                            value={comment}
-                            onChange={(e) => { setComment(e.target.value) }}
-                        />
-                        <Button sx={{ mt: 2 }} variant="contained" onClick={addComment}>add comment</Button>
+                        {props.isLoggedIn &&
+                            <>   <Typography variant="h4" align="center">Comments</Typography>
+                                <TextField
+                                    id="outlined-multiline-static"
+                                    label="comment"
+                                    multiline
+                                    minRows={2}
+                                    fullWidth
+                                    value={comment}
+                                    onChange={(e) => { setComment(e.target.value) }}
+                                />
+                                <Button sx={{ mt: 2 }} variant="contained" onClick={addComment}>add comment</Button></>}
                         {
                             product?.comments.map(
                                 (comment) => {
