@@ -109,7 +109,7 @@ export function Home(props: Props) {
                             <>
                                 <ListItem key={category.name} disablePadding>
                                     {/* <Button sx={{ p: 0 }} disabled variant="text"> */}
-                                        <Typography color='grey' sx={{ typography: { xs: 'subtitle2', sm: 'h6', md: 'h5' } }}>{category.name}</Typography>
+                                    <Typography color='grey' sx={{ typography: { xs: 'subtitle2', sm: 'h6', md: 'h5' } }}>{category.name}</Typography>
                                     {/* </Button> */}
                                 </ListItem>
                                 <Divider />

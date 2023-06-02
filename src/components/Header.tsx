@@ -105,6 +105,25 @@ export function Header(props: Props) {
 
     }
 
+    const SearchBar = () => {
+        return <form onSubmit={handleSubmit} style={{ display: 'inline-block', float: 'left' }}>
+            <TextField label="Search" type="search" size='small'
+                // (e) => { setSearchName(e.target.value) }
+                // onChange={handleSearchChange}
+                onInput={handleSearchChange}
+                value={searchName}
+                sx={searchStyle}
+                InputProps={{
+                    endAdornment: (
+                        <InputAdornment position="end">
+                            <SearchIcon />
+                        </InputAdornment>
+                    ),
+                }}
+            />
+        </form>
+    }
+
     return <div>
         <Navbar>
             <Nav appearance='tabs'>
@@ -118,28 +137,14 @@ export function Header(props: Props) {
                     ? <>
                         {/* <Button variant="contained" onClick={adminButton} >Admin</Button> */}
 
-                        <form onSubmit={handleSubmit} style={{ display: 'inline-block', float: 'left' }}>
-                            <TextField label="Search" type="search" size='small'
-                                // (e) => { setSearchName(e.target.value) }
-                                // onChange={handleSearchChange}
-                                onInput={handleSearchChange}
-                                value={searchName}
-                                sx={searchStyle}
-                                InputProps={{
-                                    endAdornment: (
-                                        <InputAdornment position="end">
-                                            <SearchIcon />
-                                        </InputAdornment>
-                                    ),
-                                }}
-                            />
-                        </form>
+                        <SearchBar />
 
                         {isAdmin && <Nav.Item as={NavLink} to='/admin'><Typography variant='h6'>Admin</Typography></Nav.Item>}
                         <Nav.Item as={NavLink} to='/cart'><Typography sx={{ mr: 0.5 }} color={'red'}>{total} $</Typography><ShoppingCartIcon /></Nav.Item>
                         <Nav.Item as={NavLink} to='/logout' onClick={() => { }}><Typography variant='h6'>logout</Typography></Nav.Item>
                     </>
                     : <>
+                        <SearchBar />
                         <Nav.Item as={NavLink} to='/sign-in' ><Typography variant='h6'>Sign In</Typography></Nav.Item>
                         <Nav.Item as={NavLink} to='/sign-up'><Typography variant='h6'>Sign Up</Typography></Nav.Item>
                     </>
