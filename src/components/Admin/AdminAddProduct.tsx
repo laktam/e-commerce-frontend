@@ -1,4 +1,4 @@
-import {  Button, FormControl, Grid, InputLabel, MenuItem, Paper, Select, SelectChangeEvent,  TextField } from "@mui/material";
+import { Button, FormControl, Grid, InputLabel, MenuItem, Paper, Select, SelectChangeEvent, TextField } from "@mui/material";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { BASE_URL } from "../../const";
@@ -22,7 +22,7 @@ export function AdminAddProduct(props: Props) {
 
     useEffect(() => {
         //get names of categories
-        axios.get(BASE_URL + 'product/categories',
+        axios.get(`${process.env.REACT_APP_BASE_URL}/product/categories`,
 
         ).then(
             (response) => {
@@ -79,12 +79,13 @@ export function AdminAddProduct(props: Props) {
                     quantity: quantity,
                 }
                 data.append('product', JSON.stringify(product))
-                const res = await axios.put(BASE_URL + 'product/update/'
+                const res = await axios.put(`${process.env.REACT_APP_BASE_URL}/product/update/`
                     , data
                     ,
                     {
                         headers: {
                             'Content-Type': 'multipart/form-data',
+                            Authorization: `Bearer ${localStorage.getItem('token')}`
                         }
                     });
 
@@ -94,12 +95,13 @@ export function AdminAddProduct(props: Props) {
                     return;
                 }
                 data.append('product', JSON.stringify(product))
-                const res = await axios.post(BASE_URL + 'product/create'
+                const res = await axios.post(`${process.env.REACT_APP_BASE_URL}/product/create`
                     , data
                     ,
                     {
                         headers: {
                             'Content-Type': 'multipart/form-data',
+                            Authorization: `Bearer ${localStorage.getItem('token')}`
                         }
                     });
             }

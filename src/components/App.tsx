@@ -43,13 +43,16 @@ function App() {
 
     // getting all categories
     useEffect(() => {
+        console.log('test ---------------------------')
+        console.log(`${process.env.REACT_APP_BASE_URL}`);
+
         const l = localStorage.getItem('isLoggedIn')
         if (l === 'true') {
             setIsLoggedIn(true)
         } else {
             setIsLoggedIn(false)
         }
-        axios.get(BASE_URL + 'product/categories/').then(
+        axios.get(`${process.env.REACT_APP_BASE_URL}/product/categories/`).then(
             (response) => {
                 setAllCategories(response.data)
             }
@@ -71,7 +74,7 @@ function App() {
 
     const deleteProduct = async () => {
         try {
-            await axios.delete(BASE_URL + 'product/delete/' + delPrdId, {
+            await axios.delete(`${process.env.REACT_APP_BASE_URL}/product/delete/${delPrdId}`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                 }

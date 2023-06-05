@@ -43,7 +43,7 @@ export function Home(props: Props) {
         setIsEmpty(false)
         console.log('all***********');
 
-        axios.get(BASE_URL + 'product/all/').then(
+        axios.get(process.env.REACT_APP_BASE_URL + 'product/all/').then(
             (response) => {
                 setAllProds(response.data.reverse())
                 setProds(response.data.reverse())

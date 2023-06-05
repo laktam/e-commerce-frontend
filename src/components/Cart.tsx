@@ -14,7 +14,7 @@ type Props = {
 export function Cart(props: Props) {
     const [cartOrders, setCartOrders] = useState<OrderDB[]>([])
     useEffect(() => {
-        axios.get(BASE_URL + 'cart/all/' + localStorage.getItem('cartId')
+        axios.get(`${process.env.REACT_APP_BASE_URL}/cart/all/${localStorage.getItem('cartId')}`
             , {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -45,7 +45,7 @@ export function Cart(props: Props) {
                 </Grid>
                 :
                 <Container maxWidth={"xs"} sx={{ mt: 15, }} >
-                    <img src={emptyCart} width={'80%'}  />
+                    <img src={emptyCart} width={'60%'} />
                 </Container>
         }
 

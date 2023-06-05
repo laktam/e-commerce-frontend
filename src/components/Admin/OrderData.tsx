@@ -15,7 +15,7 @@ export function OrderData() {
     const [user, setUser] = useState<UserDB>()
 
     useEffect(() => {
-        axios.get(BASE_URL + 'user/all/'
+        axios.get(`${process.env.REACT_APP_BASE_URL}/user/all/`
             , {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`

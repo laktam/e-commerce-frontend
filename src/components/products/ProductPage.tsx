@@ -31,7 +31,7 @@ export function ProductPage(props: Props) {
     const addProduct = async () => {
 
         try {
-            const response = await axios.put(BASE_URL + 'cart/addProduct',
+            const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/cart/addProduct`,
                 {
                     cartId: Number(localStorage.getItem('cartId')),
                     productId: product?.id
@@ -54,7 +54,7 @@ export function ProductPage(props: Props) {
 
     const getTotal = () => {
         //also set localstorage total
-        axios.get(BASE_URL + 'user/total/' + localStorage.getItem('userId')
+        axios.get(`${process.env.REACT_APP_BASE_URL}/user/total/${localStorage.getItem('userId')}`
             , {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             }
@@ -72,7 +72,7 @@ export function ProductPage(props: Props) {
 
 
     useEffect(() => {
-        axios.get(BASE_URL + 'product/' + productId,
+        axios.get(`${process.env.REACT_APP_BASE_URL}/product/${productId}`,
             // {
             //     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             // }
@@ -115,7 +115,7 @@ export function ProductPage(props: Props) {
     }
 
     const addComment = () => {
-        axios.post(BASE_URL + 'product/comment',
+        axios.post(`${process.env.REACT_APP_BASE_URL}/product/comment`,
             {
                 productId: productId,
                 comment: comment,
@@ -255,10 +255,12 @@ export function ProductPage(props: Props) {
                 </Paper>
 
                 {/* Comments */}
+
                 {
                     <Paper sx={{ p: 5, mt: 1 }}>
+                        <Typography variant="h4" align="center">Comments</Typography>
                         {props.isLoggedIn &&
-                            <>   <Typography variant="h4" align="center">Comments</Typography>
+                            <>
                                 <TextField
                                     id="outlined-multiline-static"
                                     label="comment"

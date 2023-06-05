@@ -14,7 +14,7 @@ export function Comments() {
 
     useEffect(
         () => {
-            axios.get(BASE_URL + 'product/all/comments',
+            axios.get(`${process.env.REACT_APP_BASE_URL}/product/all/comments`,
                 {
                     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
                 }).then(

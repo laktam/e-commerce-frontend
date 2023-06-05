@@ -1,4 +1,4 @@
-import {  Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Skeleton, Snackbar, Typography } from "@mui/material";
+import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Skeleton, Snackbar, Typography } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { BASE_URL } from "../../const";
@@ -33,7 +33,7 @@ export function Order(props: Props) {
 
 
     const removeFromCart = () => {
-        axios.delete(BASE_URL + 'cart/delOrder/' + localStorage.getItem('cartId') + '/' + props.order.id
+        axios.delete(`${process.env.REACT_APP_BASE_URL}/cart/delOrder/${localStorage.getItem('cartId')}/${props.order.id}`
             , {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             }
@@ -49,12 +49,12 @@ export function Order(props: Props) {
             (err) => {
                 console.log(err);
             }
-        )  
+        )
     }
 
     const getTotal = () => {
         //also set localstorage total
-        axios.get(BASE_URL + 'user/total/' + localStorage.getItem('userId')
+        axios.get(`${process.env.REACT_APP_BASE_URL}/user/total/${localStorage.getItem('userId')}`
             , {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             }
@@ -87,7 +87,7 @@ export function Order(props: Props) {
                 }
 
                 <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
+                    <Typography variant="h6" component="div">
                         {props.order.product.name}
                     </Typography>
 

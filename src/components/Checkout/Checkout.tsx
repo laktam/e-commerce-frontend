@@ -68,7 +68,7 @@ export default function Checkout() {
 
 
         try {
-            response = await axios.post(BASE_URL + 'card/check'
+            response = await axios.post(`${process.env.REACT_APP_BASE_URL}/card/check`
                 , {
                     name: name,
                     number: cardNumber,

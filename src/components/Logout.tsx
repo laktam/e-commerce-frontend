@@ -33,7 +33,7 @@ export function Logout(props: Props) {
 //     () => {
 //         const cartId = localStorage.getItem('cartId')
 
-//         axios.get(BASE_URL + 'cart/all/' + cartId,
+//         axios.get(process.env.REACT_APP_BASE_URL + 'cart/all/' + cartId,
 //             {
 //                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
 //             }).then(
@@ -42,7 +42,7 @@ export function Logout(props: Props) {
 //                     //increment qtt for each product still in the cart
 //                     response.data.products.map(
 //                         (prod: any) => {
-//                             axios.put(BASE_URL + 'product/updateQtt'
+//                             axios.put(process.env.REACT_APP_BASE_URL + 'product/updateQtt'
 //                                 , {
 //                                     productId: prod.id,
 //                                     // productQtt: (Number(props.quantity) + 1),
@@ -58,7 +58,7 @@ export function Logout(props: Props) {
 //                     )
 
 //                     //delete cart
-//                     axios.delete(BASE_URL + 'cart/delete/' + cartId, {
+//                     axios.delete(process.env.REACT_APP_BASE_URL + 'cart/delete/' + cartId, {
 //                         headers: {
 //                             Authorization: `Bearer ${localStorage.getItem('token')}`
 //                         }

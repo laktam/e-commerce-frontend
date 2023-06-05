@@ -1,6 +1,6 @@
 import { Alert, Button, TextField } from "@mui/material";
 import axios from "axios";
-import {  useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../const";
 
@@ -35,7 +35,7 @@ export function SignInForm(props: SetterProps) {
         setLoginError(false)
         try {
             // getting the token
-            let response = await axios.post(BASE_URL + 'auth/login', loginUser)
+            let response = await axios.post(`${process.env.REACT_APP_BASE_URL}/auth/login`, loginUser)
             const token = response.data.access_token;
 
             //
@@ -50,8 +50,7 @@ export function SignInForm(props: SetterProps) {
             setPassword('')
 
             // getting the id
-            response = await axios.get(
-                BASE_URL + 'auth/profile',
+            response = await axios.get(`${process.env.REACT_APP_BASE_URL}/auth/profile`,
                 {
                     headers: { Authorization: `Bearer ${token}` }
                 }
@@ -67,7 +66,7 @@ export function SignInForm(props: SetterProps) {
             }
             props.userIdSetter(userId);
             //getting user cart
-            response = await axios.get(BASE_URL + 'user/cart/' + userId
+            response = await axios.get(`${process.env.REACT_APP_BASE_URL}/user/cart/${userId}`
                 , {
                     headers: { Authorization: `Bearer ${token}` }
                 })
@@ -80,7 +79,7 @@ export function SignInForm(props: SetterProps) {
             localStorage.setItem('cartId', cartId.toString())
             localStorage.setItem('userId', userId.toString())
 
-            response = await axios.put(BASE_URL + 'user/addCart/',
+            response = await axios.put(`${process.env.REACT_APP_BASE_URL}/user/addCart/`,
                 {
                     cartId: cartId,
                     userId: userId
@@ -90,7 +89,7 @@ export function SignInForm(props: SetterProps) {
                 }
             )
             //total
-            response = await axios.get(BASE_URL + 'user/total/' + userId,
+            response = await axios.get(`${process.env.REACT_APP_BASE_URL}/user/total/${userId}`,
                 {
                     headers: { Authorization: `Bearer ${token}` }
                 })
@@ -153,7 +152,7 @@ export function SignInForm(props: SetterProps) {
 
 //try {
             // getting the token
-        //     let response = await axios.post(BASE_URL + 'auth/login', loginUser)
+        //     let response = await axios.post(process.env.REACT_APP_BASE_URL + 'auth/login', loginUser)
         //     const token = response.data.access_token;
 
         //     //
@@ -178,7 +177,7 @@ export function SignInForm(props: SetterProps) {
         //     props.userIdSetter(userId);
 
         //     //creating cart
-        //     response = await axios.post(BASE_URL + 'cart/create', {}, {
+        //     response = await axios.post(process.env.REACT_APP_BASE_URL + 'cart/create', {}, {
         //         headers: { Authorization: `Bearer ${token}` }
         //     }
         //     )
@@ -189,7 +188,7 @@ export function SignInForm(props: SetterProps) {
         //     localStorage.setItem('cartId', cartId.toString())
         //     localStorage.setItem('userId', userId.toString())
 
-        //     response = await axios.put(BASE_URL + 'user/addCart',
+        //     response = await axios.put(process.env.REACT_APP_BASE_URL + 'user/addCart',
         //         {
         //             cartId: cartId,
         //             userId: userId

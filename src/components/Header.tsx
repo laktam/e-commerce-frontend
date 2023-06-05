@@ -50,7 +50,7 @@ export function Header(props: Props) {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        // axios.get(BASE_URL + 'product/search/' + searchName)
+        // axios.get(process.env.REACT_APP_BASE_URL + 'product/search/' + searchName)
         //     .then(
         //         (response) => {
         //             console.log(response);
@@ -71,27 +71,6 @@ export function Header(props: Props) {
             navigate('/')
             props.setSearchName(searchName)
 
-            // console.log(props.);
-
-            // if (searchName.length == 0) {
-            //     props.setSearchProducts(undefined)
-            // } else {
-            //     axios.get(BASE_URL + 'product/search/' + searchName)
-            //         .then(
-            //             (response) => {
-            //                 console.log(response);
-            //                 props.setSearchProducts(response.data)
-            //             }
-            //         ).catch(
-            //             (err) => {
-            //                 console.log(err);
-
-            //             }
-            //         )
-            // }
-
-
-            // navigate('/')
         }, [searchName]
     )
 
@@ -137,14 +116,44 @@ export function Header(props: Props) {
                     ? <>
                         {/* <Button variant="contained" onClick={adminButton} >Admin</Button> */}
 
-                        <SearchBar />
+                        <form onSubmit={handleSubmit} style={{ display: 'inline-block', float: 'left' }}>
+                            <TextField label="Search" type="search" size='small'
+                                // (e) => { setSearchName(e.target.value) }
+                                // onChange={handleSearchChange}
+                                onInput={handleSearchChange}
+                                value={searchName}
+                                sx={searchStyle}
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <SearchIcon />
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                        </form>
 
                         {isAdmin && <Nav.Item as={NavLink} to='/admin'><Typography variant='h6'>Admin</Typography></Nav.Item>}
                         <Nav.Item as={NavLink} to='/cart'><Typography sx={{ mr: 0.5 }} color={'red'}>{total} $</Typography><ShoppingCartIcon /></Nav.Item>
                         <Nav.Item as={NavLink} to='/logout' onClick={() => { }}><Typography variant='h6'>logout</Typography></Nav.Item>
                     </>
                     : <>
-                        <SearchBar />
+                        <form onSubmit={handleSubmit} style={{ display: 'inline-block', float: 'left' }}>
+                            <TextField label="Search" type="search" size='small'
+                                // (e) => { setSearchName(e.target.value) }
+                                // onChange={handleSearchChange}
+                                onInput={handleSearchChange}
+                                value={searchName}
+                                sx={searchStyle}
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <SearchIcon />
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                        </form>
                         <Nav.Item as={NavLink} to='/sign-in' ><Typography variant='h6'>Sign In</Typography></Nav.Item>
                         <Nav.Item as={NavLink} to='/sign-up'><Typography variant='h6'>Sign Up</Typography></Nav.Item>
                     </>

@@ -35,7 +35,7 @@ export function SignUpForm() {
         setEmailError('')
 
         axios.post(
-            BASE_URL + 'auth/sign-up', user)
+            `${process.env.REACT_APP_BASE_URL}/auth/sign-up`, user)
             .then((response) => {
                 console.log(response.data)
                 setName('')
@@ -60,7 +60,7 @@ export function SignUpForm() {
                     setNameError(err.response.data.message)
                 }
                 console.log(err.response.data.message)
-            })
+            }).catch((err) => console.log(err))
 
     }
 

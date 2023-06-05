@@ -27,7 +27,7 @@ export function Product(props: Props) {
     const [image, setImage] = useState('')
     useEffect(
         () => {
-            // axios.get(BASE_URL + 'product/quantity/' + props.product.id)
+            // axios.get(process.env.REACT_APP_BASE_URL + 'product/quantity/' + props.product.id)
             //     .then(
             //         (response) => {
             //             setQtt(response.data)
@@ -52,7 +52,7 @@ export function Product(props: Props) {
     //add product to cart
     const addProduct = async () => {
         try {
-            const response = await axios.put(BASE_URL + 'cart/addProduct',
+            const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/cart/addProduct`,
                 {
                     cartId: Number(localStorage.getItem('cartId')),
                     productId: props.product.id
@@ -76,7 +76,7 @@ export function Product(props: Props) {
 
     const getTotal = () => {
         //also set localstorage total
-        axios.get(BASE_URL + 'user/total/' + localStorage.getItem('userId')
+        axios.get(`${process.env.REACT_APP_BASE_URL}/user/total/${localStorage.getItem('userId')}`
             , {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             }
@@ -160,7 +160,7 @@ export function Product(props: Props) {
 // const addProduct = () => {
 //     //cart/addProduct will decrement qtt
 //     // if (qtt > 0) {
-//     axios.put(BASE_URL + 'cart/addProduct',
+//     axios.put(process.env.REACT_APP_BASE_URL + 'cart/addProduct',
 //         {
 //             cartId: Number(localStorage.getItem('cartId')),
 //             productId: props.product.id

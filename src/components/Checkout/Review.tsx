@@ -45,12 +45,12 @@ export default function Review() {
     const [total, setTotal] = useState(0)
 
     useEffect(() => {
-        axios.get(BASE_URL + 'cart/all/' + localStorage.getItem('cartId'), {
+        axios.get(`${process.env.REACT_APP_BASE_URL}/cart/all/${localStorage.getItem('cartId')}`, {
             headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         }).then((response) => {
             setCartOrders(response.data)
 
-            axios.get(BASE_URL + 'user/total/' + localStorage.getItem('userId'),
+            axios.get(`${process.env.REACT_APP_BASE_URL}/user/total/${localStorage.getItem('userId')}`,
                 {
                     headers: { Authorization: 'Bearer ' + localStorage.getItem('token') }
                 }).then(

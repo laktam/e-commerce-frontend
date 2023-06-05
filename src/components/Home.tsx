@@ -25,8 +25,10 @@ type Props = {
 export function Home(props: Props) {
 
     const [isLoggedIn, setIsLoggedIn] = useState<string | null>('')
-    const [isEmpty, setIsEmpty] = useState(false)
-    const [categories, setCategories] = useState<Category[]>([])//contain search products
+    const [searching, setSearching] = useState(false)
+    const [isEmpty, setIsEmpty] = useState(false) 
+    const [categories, setCategories] = useState<Category[]>([])
+    const [searchProducts, setSearchProducts] = useState<ProductDB[]>([])
     // const [allCategories, setAllCategories] = useState<Category[]>([])//contain ll products
     const [stackDisplay, setStackDisplay] = useState<'none' | 'inline'>('inline')
     const navigate = useNavigate()
@@ -37,16 +39,8 @@ export function Home(props: Props) {
         setIsLoggedIn(localStorage.getItem('isLoggedIn'))
         setCategories(props.allCategories)
         setIsEmpty(false)
-        // axios.get(BASE_URL + 'product/categories/').then(
-        //     (response) => {
-        //         setAllCategories(response.data)
-        //         setCategories(response.data)
 
-        //     }
-        // ).catch((err) => {
-        //     console.log(err)
-        // })
-    },)// ?????????????????????????????????????????????????????????????????????????????????/no [] to update on every refresh
+    }, [props.allCategories])// ?????????????????????????????????????????????????????????????????????????????????/no [] to update on every refresh
 
     useEffect(
         () => {
@@ -56,7 +50,10 @@ export function Home(props: Props) {
                 setStackDisplay('inline')
                 setCategories(props.allCategories)
                 setIsEmpty(false)
+                setSearching(false)
             } else {
+                setIsEmpty(false)
+                setSearching(true)
                 setStackDisplay('none')
                 let results: ProductDB[] = []
                 for (let cat of props.allCategories) {
@@ -64,17 +61,18 @@ export function Home(props: Props) {
                         cat.products.filter((prod) => prod.name.toLowerCase().includes(props.searchName.toLowerCase()))
                     )
                 }
-                const resultCats = [{
-                    id: 0,
-                    name: '',
-                    products: results,
-                }]
-                console.log(resultCats);
+                // const resultCats = [{
+                //     id: 0,
+                //     name: '',
+                //     products: results,
+                // }]
+                console.log(results);
 
-                setCategories(resultCats)
+                setSearchProducts(results)
                 // const result = allProds.filter((prod) => prod.name.toLowerCase().includes(props.searchName.toLowerCase()))
                 // setProds(result)
-                if (resultCats[0].products.length == 0) {
+                // resultCats[0].products
+                if (results.length == 0) {
                     setIsEmpty(true)
                 } else {
                     setIsEmpty(false)
@@ -126,7 +124,7 @@ export function Home(props: Props) {
 
     return <>
         <Outlet />
-        {!isEmpty ?
+        {!isEmpty && !searching ?
             <Grid container spacing={0}>
                 <Grid item xs={1.7} >
                     <Stack spacing={0} sx={{ display: stackDisplay, position: 'sticky', top: 0 }}>
@@ -183,11 +181,29 @@ export function Home(props: Props) {
 
             </Grid>
             :
-            //isLoggedIn = False
+
             <div>
-                <Container maxWidth={"sm"} sx={{ mt: 10 }}>
-                    <img src={NoResults} />
-                </Container>
+                {!isEmpty && searching ?
+                    <>
+                        <Grid container spacing={2} alignItems="flex-start" sx={{ pl: 5, pr: 10 }}>
+                            {searchProducts.reverse().map(
+                                (prod, index) => {
+                                    return <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
+                                        <Product isLoggedIn={props.isLoggedIn} setTotal={props.setTotal} inCart={false} key={index} img={""} description={""} product={prod} />
+                                    </Grid>
+                                }
+                            )}
+                        </Grid>
+
+
+
+                    </>
+
+                    : <Container maxWidth={"sm"} sx={{ mt: 10 }}>
+                        <img src={NoResults} />
+                    </Container>
+                }
+
             </div>
         }
 

@@ -90,7 +90,7 @@ export function Admin(props: Props) {
 
                     //getting product 
                     try {
-                        const response = await axios.get(BASE_URL + 'product/' + params.id
+                        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/product/${params.id}`
                             , {
                                 headers: {
                                     Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -132,7 +132,9 @@ export function Admin(props: Props) {
 
     useEffect(
         () => {
-            axios.get(BASE_URL + 'product/all/').then(
+            axios.get(`${process.env.REACT_APP_BASE_URL}/product/all/`, {
+                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+            }).then(
                 (response) => {
                     setProds(response.data)
                     setIsReady(true)
@@ -174,7 +176,7 @@ export function Admin(props: Props) {
         setDialogOpen(false)
     }
     const addCategory = () => {
-        axios.post(BASE_URL + 'product/addCategory',
+        axios.post(`${process.env.REACT_APP_BASE_URL}/product/addCategory`,
             {
                 categoryName: categoryName
             }
