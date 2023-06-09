@@ -185,7 +185,7 @@ export function Home(props: Props) {
                 {!isEmpty && searching ?
                     <>
                         <Grid container spacing={2} alignItems="flex-start" sx={{ pl: 5, pr: 10 }}>
-                            {searchProducts.reverse().map(
+                            {searchProducts.map(
                                 (prod, index) => {
                                     return <Grid item key={prod.id} xs={12} sm={6} md={4} lg={3}>
                                         <Product isLoggedIn={props.isLoggedIn} setTotal={props.setTotal} inCart={false} key={index} img={""} description={""} product={prod} />

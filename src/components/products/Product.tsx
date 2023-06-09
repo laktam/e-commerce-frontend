@@ -141,11 +141,7 @@ export function Product(props: Props) {
                     </Snackbar>
 
                     {/* show qtt when prod not in cart */}
-                    {!props.inCart && <Typography color={'green'} >
-                        {/* {props.quantity} */}
-                        {qtt}
-                    </Typography>}
-
+                    
                     <Typography color={'red'} >
                         {props.product.price} $
                     </Typography>

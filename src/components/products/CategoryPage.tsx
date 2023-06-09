@@ -23,7 +23,7 @@ export function CategoryPage(props: Props) {
         <Grid container >
             <Grid item xs></Grid>
             <Grid container item xs={9}  spacing={2} alignItems="flex-start">
-                {props.category.products.reverse().map(
+                {props.category.products.map(
                     (prod, index) => {
                         return <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
                             <Product isLoggedIn={props.isLoggedIn} setTotal={props.setTotal} inCart={false} key={index} img={""} description={""} product={prod} />
