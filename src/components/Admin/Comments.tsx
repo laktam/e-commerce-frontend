@@ -22,7 +22,7 @@ export function Comments() {
                         console.log(response.data);
                         setComments(response.data)
                     }
-                ).catch(
+                ).catch( 
                     (err) => console.log(err)
                 )
         }, []

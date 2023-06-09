@@ -112,7 +112,7 @@ export function Product(props: Props) {
                         </CardMedia>
                         <CardContent>
                             {/* gutterBottom */}
-                            <Typography variant="h5" component="div">
+                            <Typography variant="h6" component="div">
                                 {props.product.name}
                             </Typography>
 
@@ -120,7 +120,7 @@ export function Product(props: Props) {
                                 {props.product.description}
                             </Typography> */}
 
-                        </CardContent>
+                        </CardContent>  
                     </CardActionArea>
                 </Link>
                 <CardActions sx={{ display: 'flex', justifyContent: 'space-between' }}>

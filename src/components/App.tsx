@@ -54,6 +54,8 @@ function App() {
         }
         axios.get(`${process.env.REACT_APP_BASE_URL}/product/categories/`).then(
             (response) => {
+                console.log('==========================> setAllCategories');
+                
                 setAllCategories(response.data)
             }
         ).catch((err) => {

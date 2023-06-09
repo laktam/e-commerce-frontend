@@ -26,7 +26,7 @@ export function Home(props: Props) {
 
     const [isLoggedIn, setIsLoggedIn] = useState<string | null>('')
     const [searching, setSearching] = useState(false)
-    const [isEmpty, setIsEmpty] = useState(false) 
+    const [isEmpty, setIsEmpty] = useState(false)
     const [categories, setCategories] = useState<Category[]>([])
     const [searchProducts, setSearchProducts] = useState<ProductDB[]>([])
     // const [allCategories, setAllCategories] = useState<Category[]>([])//contain ll products
@@ -104,14 +104,14 @@ export function Home(props: Props) {
                                 <Divider />
                             </AnchorLink>
                             :
-                            <>
-                                <ListItem key={category.name} disablePadding>
+                            <div key={category.name}>
+                                <ListItem disablePadding>
                                     {/* <Button sx={{ p: 0 }} disabled variant="text"> */}
                                     <Typography color='grey' sx={{ typography: { xs: 'subtitle2', sm: 'h6', md: 'h5' } }}>{category.name}</Typography>
                                     {/* </Button> */}
                                 </ListItem>
                                 <Divider />
-                            </>
+                            </div>
 
                     )
                     )
@@ -139,7 +139,6 @@ export function Home(props: Props) {
                                     return
                                 } else {
 
-
                                     return <div key={category.id} style={{ width: '100%' }} id={category.name}>
                                         <Grid container justifyContent="space-between" alignItems="flex-end" item xs={12}>
                                             {/* variant="h3" */}
@@ -163,10 +162,10 @@ export function Home(props: Props) {
 
 
                                         </Grid>
-                                        <Grid container spacing={2} alignItems="flex-start" sx={{ pl: 5, pr: 10 }}>
-                                            {category.products.reverse().slice(0, 4).map(
+                                        <Grid key={category.name} container spacing={2} alignItems="flex-start" sx={{ pl: 5, pr: 10 }}>
+                                            {category.products.slice(0, 4).map(
                                                 (prod, index) => {
-                                                    return <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
+                                                    return <Grid item key={prod.id} xs={12} sm={6} md={4} lg={3}>
                                                         <Product isLoggedIn={props.isLoggedIn} setTotal={props.setTotal} inCart={false} key={index} img={""} description={""} product={prod} />
                                                     </Grid>
                                                 }
@@ -188,7 +187,7 @@ export function Home(props: Props) {
                         <Grid container spacing={2} alignItems="flex-start" sx={{ pl: 5, pr: 10 }}>
                             {searchProducts.reverse().map(
                                 (prod, index) => {
-                                    return <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
+                                    return <Grid item key={prod.id} xs={12} sm={6} md={4} lg={3}>
                                         <Product isLoggedIn={props.isLoggedIn} setTotal={props.setTotal} inCart={false} key={index} img={""} description={""} product={prod} />
                                     </Grid>
                                 }
