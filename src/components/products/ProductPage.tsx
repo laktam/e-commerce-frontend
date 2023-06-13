@@ -282,7 +282,7 @@ export function ProductPage(props: Props) {
                                     //     </Stack>
                                     //     <Divider />
                                     // </>
-                                    return <ListItem>
+                                    return <ListItem key={comment.id}>
                                         <ListItemAvatar>
                                             <Avatar>{comment.username.toUpperCase().charAt(0)}</Avatar>
                                         </ListItemAvatar>

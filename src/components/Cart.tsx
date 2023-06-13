@@ -8,7 +8,7 @@ import emptyCart from '../img/emptyCart.png'
 
 type Props = {
     setTotal: React.Dispatch<React.SetStateAction<number>>;
-    total: number
+    total: number;
 }
 
 export function Cart(props: Props) {
@@ -44,9 +44,16 @@ export function Cart(props: Props) {
                     )}
                 </Grid>
                 :
-                <Container maxWidth={"xs"} sx={{ mt: 15, }} >
-                    <img src={emptyCart} width={'60%'} />
-                </Container>
+                <>
+                    {props.total > 0 ?
+                        <></>
+                        :
+                        <Container maxWidth={"xs"} sx={{ mt: 15, }} >
+                            <img src={emptyCart} width={'60%'} />
+                        </Container>
+                    }
+                </>
+
         }
 
     </>
